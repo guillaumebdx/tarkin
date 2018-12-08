@@ -162,28 +162,4 @@ class PhysicalPerson
     {
         return $this->birthDate;
     }
-
-    /**
-     * Set user.
-     *
-     * @param \AppBundle\Entity\User|null $user
-     *
-     * @return PhysicalPerson
-     */
-    public function setUser(\AppBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user.
-     *
-     * @return \AppBundle\Entity\User|null
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
 }
