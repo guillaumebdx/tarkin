@@ -12,6 +12,22 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LawPosition
 {
+    
+    
+    const commonCommunity    = 'common-community';
+    const separatedProperty  = 'separated-property';
+    const participation      = 'participation';
+    const universalCommunity = 'universal-community';
+    const movableCommunity   = 'movable-community';
+    const individedPacs      = 'individed-pacs';
+    const sibling            = 'sibling';
+    const parent             = 'parent';
+    const child              = 'child';
+    const uncleAunt          = 'uncle-aunt';
+    const greatParent        = 'great-parent';
+    const greatChild         = 'great-child';
+    
+    
     /**
      * @var int
      *
@@ -24,7 +40,7 @@ class LawPosition
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -85,6 +101,30 @@ class LawPosition
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set cradle.
+     *
+     * @param bool $spouse
+     *
+     * @return LawPosition
+     */
+    public function setSpouse($spouse)
+    {
+        $this->spouse = $spouse;
+        
+        return $this;
+    }
+    
+    /**
+     * Get spouse.
+     *
+     * @return bool
+     */
+    public function getSpouse()
+    {
+        return $this->spouse;
     }
 
     /**

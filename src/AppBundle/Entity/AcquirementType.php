@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AcquirementType
 {
+    const beforeMarriage = 'before-marriage';
+    const duringMarriage = 'during-marriage';
+    const donateInherit  = 'donate-inherit';
     /**
      * @var int
      *

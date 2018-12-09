@@ -28,6 +28,7 @@ class UserController extends Controller
             $users          = [];
             foreach ($userCollection as $user) {
                 $users[] = [
+                    'id'    => $user->getId(),
                     'name'  => $user->getNameReference(),
                     'email' => $user->getEmail(),
                     
