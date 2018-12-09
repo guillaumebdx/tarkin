@@ -12,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class FamilyPosition
 {
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPositions;
     /**
      * @var int
      *
@@ -92,5 +99,29 @@ class FamilyPosition
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    /**
+     * Set lawPositions.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPositions
+     *
+     * @return FamilyPosition
+     */
+    public function setLawPositions(\AppBundle\Entity\LawPosition $lawPositions = null)
+    {
+        $this->lawPositions = $lawPositions;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPositions.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPositions()
+    {
+        return $this->lawPositions;
     }
 }

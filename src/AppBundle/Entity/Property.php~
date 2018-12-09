@@ -12,6 +12,39 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Property
 {
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="PropertyType", inversedBy="propertyTypes")
+     * @ORM\JoinColumn(name="property_type_id", referencedColumnName="id")
+     */
+    private $propertyTypes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AcquirementType", inversedBy="acquirementTypes")
+     * @ORM\JoinColumn(name="acquirement_type_id", referencedColumnName="id")
+     */
+    private $acquirementTypes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SaleFiscality", inversedBy="saleFiscalities")
+     * @ORM\JoinColumn(name="sale_fiscality_id", referencedColumnName="id")
+     */
+    private $saleFiscalities;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="InterestFiscality", inversedBy="interestFiscalities")
+     * @ORM\JoinColumn(name="interest_fiscality_id", referencedColumnName="id")
+     */
+    private $interestFiscalities;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="LiquidationFiscality", inversedBy="liquidationFiscalities")
+     * @ORM\JoinColumn(name="liquidation_fiscality_id", referencedColumnName="id")
+     */
+    private $liquidationFiscalities;
+    
+    
     /**
      * @var int
      *
@@ -38,14 +71,14 @@ class Property
     /**
      * @var int
      *
-     * @ORM\Column(name="returnRate", type="integer")
+     * @ORM\Column(name="return_rate", type="integer")
      */
     private $returnRate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="acquirementDate", type="datetime", nullable=true)
+     * @ORM\Column(name="acquirement_date", type="datetime", nullable=true)
      */
     private $acquirementDate;
 

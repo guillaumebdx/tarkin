@@ -12,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class FiscalityAmountBearing
 {
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="FiscalityYearBearing", inversedBy="fiscalityYearBearings")
+     * @ORM\JoinColumn(name="fiscality_year_bearing_id", referencedColumnName="id")
+     */
+    private $fiscalityYearBearings;
     /**
      * @var int
      *
@@ -61,5 +68,29 @@ class FiscalityAmountBearing
     public function getRate()
     {
         return $this->rate;
+    }
+
+    /**
+     * Set fiscalityYearBearings.
+     *
+     * @param \AppBundle\Entity\FiscalityYearBearing|null $fiscalityYearBearings
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setFiscalityYearBearings(\AppBundle\Entity\FiscalityYearBearing $fiscalityYearBearings = null)
+    {
+        $this->fiscalityYearBearings = $fiscalityYearBearings;
+
+        return $this;
+    }
+
+    /**
+     * Get fiscalityYearBearings.
+     *
+     * @return \AppBundle\Entity\FiscalityYearBearing|null
+     */
+    public function getFiscalityYearBearings()
+    {
+        return $this->fiscalityYearBearings;
     }
 }

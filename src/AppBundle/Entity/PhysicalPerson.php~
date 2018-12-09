@@ -12,13 +12,31 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PhysicalPerson
 {
-    
-    
+
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="physicalPersons")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="FamilyPosition", inversedBy="physicalPersons")
+     * @ORM\JoinColumn(name="family_position_id", referencedColumnName="id")
+     */
+    private $familyPosition;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="physicalPersons")
+     * @ORM\JoinColumn(nullable=true, onDelete="cascade")
+     */
+    private $parent;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PhysicalPerson", mappedBy="parent")
+     */
+    private $physicalPersons;
+    
     /**
      * @var int
      *
@@ -161,5 +179,120 @@ class PhysicalPerson
     public function getBirthDate()
     {
         return $this->birthDate;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \AppBundle\Entity\User|null $user
+     *
+     * @return PhysicalPerson
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \AppBundle\Entity\User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set familyPosition.
+     *
+     * @param \AppBundle\Entity\FamilyPosition|null $familyPosition
+     *
+     * @return PhysicalPerson
+     */
+    public function setFamilyPosition(\AppBundle\Entity\FamilyPosition $familyPosition = null)
+    {
+        $this->familyPosition = $familyPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get familyPosition.
+     *
+     * @return \AppBundle\Entity\FamilyPosition|null
+     */
+    public function getFamilyPosition()
+    {
+        return $this->familyPosition;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson|null $parent
+     *
+     * @return PhysicalPerson
+     */
+    public function setParent(\AppBundle\Entity\PhysicalPerson $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return \AppBundle\Entity\PhysicalPerson|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add physicalPerson.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $physicalPerson
+     *
+     * @return PhysicalPerson
+     */
+    public function addPhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    {
+        $this->physicalPersons[] = $physicalPerson;
+
+        return $this;
+    }
+
+    /**
+     * Remove physicalPerson.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $physicalPerson
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    {
+        return $this->physicalPersons->removeElement($physicalPerson);
+    }
+
+    /**
+     * Get physicalPersons.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhysicalPersons()
+    {
+        return $this->physicalPersons;
     }
 }

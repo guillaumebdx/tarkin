@@ -12,6 +12,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LiquidationFiscality
 {
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPositions;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="FiscalityAmountBearing", inversedBy="fiscalityAmountBearings")
+     * @ORM\JoinColumn(name="fiscality_amount_bearing_id", referencedColumnName="id")
+     */
+    private $fiscalityAmountBearings;
+
     /**
      * @var int
      *
@@ -92,5 +106,53 @@ class LiquidationFiscality
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    /**
+     * Set lawPositions.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPositions
+     *
+     * @return LiquidationFiscality
+     */
+    public function setLawPositions(\AppBundle\Entity\LawPosition $lawPositions = null)
+    {
+        $this->lawPositions = $lawPositions;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPositions.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPositions()
+    {
+        return $this->lawPositions;
+    }
+
+    /**
+     * Set fiscalityAmountBearings.
+     *
+     * @param \AppBundle\Entity\FiscalityAmountBearing|null $fiscalityAmountBearings
+     *
+     * @return LiquidationFiscality
+     */
+    public function setFiscalityAmountBearings(\AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearings = null)
+    {
+        $this->fiscalityAmountBearings = $fiscalityAmountBearings;
+
+        return $this;
+    }
+
+    /**
+     * Get fiscalityAmountBearings.
+     *
+     * @return \AppBundle\Entity\FiscalityAmountBearing|null
+     */
+    public function getFiscalityAmountBearings()
+    {
+        return $this->fiscalityAmountBearings;
     }
 }

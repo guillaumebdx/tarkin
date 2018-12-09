@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -164,5 +165,41 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Add physicalPerson.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $physicalPerson
+     *
+     * @return User
+     */
+    public function addPhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    {
+        $this->physicalPersons[] = $physicalPerson;
+
+        return $this;
+    }
+
+    /**
+     * Remove physicalPerson.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $physicalPerson
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    {
+        return $this->physicalPersons->removeElement($physicalPerson);
+    }
+
+    /**
+     * Get physicalPersons.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhysicalPersons()
+    {
+        return $this->physicalPersons;
     }
 }
