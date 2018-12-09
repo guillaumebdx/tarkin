@@ -35,6 +35,11 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="physicalPersons")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPosition;
+    /**
      * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="physicalPersons")
      * @ORM\JoinColumn(nullable=true, onDelete="cascade")
      */
