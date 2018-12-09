@@ -34,8 +34,25 @@ class LawPosition
      * @ORM\Column(name="identifier", type="string", length=255, unique=true)
      */
     private $identifier;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="spouse", type="boolean")
+     */
+    private $spouse;
 
 
+    /**
+     * Class constructor
+     *
+     * @param string $name
+     */
+    public function __construct(string $name = null, string $identifier = null)
+    {
+        $this->setName($name);
+        $this->setIdentifier($identifier);
+    }
     /**
      * Get id.
      *
