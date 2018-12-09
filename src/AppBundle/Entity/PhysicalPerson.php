@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * PhysicalPerson
@@ -13,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 class PhysicalPerson
 {
 
+
+    /**
+    * @ORM\ManyToMany(targetEntity="Property", cascade={"persist"})
+    */
+    
+    private $properties;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="physicalPersons")
@@ -74,7 +82,29 @@ class PhysicalPerson
      */
     private $birthDate;
 
+    public function __construct()
+    {
+        $this->properties      = new ArrayCollection(); 
+        $this->physicalPersons = new ArrayCollection();
+    }
 
+    public function addProperty(Property $property)    
+    {
+        $this->properties[] = $property;
+        return $this;       
+    }
+    
+    public function removeProperty(Property $property)
+    {
+        $this->properties->removeElement($property);
+    }
+    
+    public function getProperties()
+    
+    {
+        return $this->properties;
+    }
+    
     /**
      * Get id.
      *
@@ -227,13 +257,6 @@ class PhysicalPerson
     public function getFamilyPosition()
     {
         return $this->familyPosition;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
