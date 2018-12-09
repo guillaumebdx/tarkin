@@ -23,9 +23,17 @@ class UserController extends Controller
     public function getUserList(Request $request)
     {
         try {
-            $em    = $this->getDoctrine()->getManager();
-            $users = $em->getRepository(User::class)->findAll();
-                        
+            $em             = $this->getDoctrine()->getManager();
+            $userCollection = $em->getRepository(User::class)->findAll();
+            $users          = [];
+            foreach ($userCollection as $user) {
+                $users[] = [
+                    'name'  => $user->getNameReference(),
+                    'email' => $user->getEmail(),
+                    
+                ];
+            }
+                       
             return new JsonResponse($users);
         } catch (\Exception $exception) {
             return new Response(

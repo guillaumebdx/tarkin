@@ -10,6 +10,7 @@ class AppKernel extends Kernel
     {
         $bundles = [
             new FOS\RestBundle\FOSRestBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
