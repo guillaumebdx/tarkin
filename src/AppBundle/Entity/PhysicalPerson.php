@@ -277,7 +277,7 @@ class PhysicalPerson
 
         return $this;
     }
-
+    
     /**
      * Get parent.
      *
@@ -322,5 +322,29 @@ class PhysicalPerson
     public function getPhysicalPersons()
     {
         return $this->physicalPersons;
+    }
+
+    /**
+     * Set lawPosition.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPosition
+     *
+     * @return PhysicalPerson
+     */
+    public function setLawPosition(\AppBundle\Entity\LawPosition $lawPosition = null)
+    {
+        $this->lawPosition = $lawPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPosition.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPosition()
+    {
+        return $this->lawPosition;
     }
 }

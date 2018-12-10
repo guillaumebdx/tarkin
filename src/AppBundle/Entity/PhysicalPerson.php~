@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * PhysicalPerson
@@ -13,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 class PhysicalPerson
 {
 
+
+    /**
+    * @ORM\ManyToMany(targetEntity="Property", cascade={"persist"})
+    */
+    
+    private $properties;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="physicalPersons")
@@ -26,6 +34,11 @@ class PhysicalPerson
      */
     private $familyPosition;
     
+    /**
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="physicalPersons")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPosition;
     /**
      * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="physicalPersons")
      * @ORM\JoinColumn(nullable=true, onDelete="cascade")
@@ -74,7 +87,29 @@ class PhysicalPerson
      */
     private $birthDate;
 
+    public function __construct()
+    {
+        $this->properties      = new ArrayCollection(); 
+        $this->physicalPersons = new ArrayCollection();
+    }
 
+    public function addProperty(Property $property)    
+    {
+        $this->properties[] = $property;
+        return $this;       
+    }
+    
+    public function removeProperty(Property $property)
+    {
+        $this->properties->removeElement($property);
+    }
+    
+    public function getProperties()
+    
+    {
+        return $this->properties;
+    }
+    
     /**
      * Get id.
      *
@@ -228,13 +263,6 @@ class PhysicalPerson
     {
         return $this->familyPosition;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Set parent.
@@ -249,7 +277,7 @@ class PhysicalPerson
 
         return $this;
     }
-
+    
     /**
      * Get parent.
      *
@@ -294,5 +322,29 @@ class PhysicalPerson
     public function getPhysicalPersons()
     {
         return $this->physicalPersons;
+    }
+
+    /**
+     * Set lawPosition.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPosition
+     *
+     * @return PhysicalPerson
+     */
+    public function setLawPosition(\AppBundle\Entity\LawPosition $lawPosition = null)
+    {
+        $this->lawPosition = $lawPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPosition.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPosition()
+    {
+        return $this->lawPosition;
     }
 }

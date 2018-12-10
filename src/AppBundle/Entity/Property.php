@@ -27,24 +27,6 @@ class Property
      */
     private $acquirementTypes;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SaleFiscality", inversedBy="saleFiscalities")
-     * @ORM\JoinColumn(name="sale_fiscality_id", referencedColumnName="id")
-     */
-    private $saleFiscalities;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="InterestFiscality", inversedBy="interestFiscalities")
-     * @ORM\JoinColumn(name="interest_fiscality_id", referencedColumnName="id")
-     */
-    private $interestFiscalities;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="LiquidationFiscality", inversedBy="liquidationFiscalities")
-     * @ORM\JoinColumn(name="liquidation_fiscality_id", referencedColumnName="id")
-     */
-    private $liquidationFiscalities;
-    
     
     /**
      * @var int
@@ -238,75 +220,5 @@ class Property
         return $this->acquirementTypes;
     }
 
-    /**
-     * Set saleFiscalities.
-     *
-     * @param \AppBundle\Entity\SaleFiscality|null $saleFiscalities
-     *
-     * @return Property
-     */
-    public function setSaleFiscalities(\AppBundle\Entity\SaleFiscality $saleFiscalities = null)
-    {
-        $this->saleFiscalities = $saleFiscalities;
 
-        return $this;
-    }
-
-    /**
-     * Get saleFiscalities.
-     *
-     * @return \AppBundle\Entity\SaleFiscality|null
-     */
-    public function getSaleFiscalities()
-    {
-        return $this->saleFiscalities;
-    }
-
-    /**
-     * Set interestFiscalities.
-     *
-     * @param \AppBundle\Entity\InterestFiscality|null $interestFiscalities
-     *
-     * @return Property
-     */
-    public function setInterestFiscalities(\AppBundle\Entity\InterestFiscality $interestFiscalities = null)
-    {
-        $this->interestFiscalities = $interestFiscalities;
-
-        return $this;
-    }
-
-    /**
-     * Get interestFiscalities.
-     *
-     * @return \AppBundle\Entity\InterestFiscality|null
-     */
-    public function getInterestFiscalities()
-    {
-        return $this->interestFiscalities;
-    }
-
-    /**
-     * Set liquidationFiscalities.
-     *
-     * @param \AppBundle\Entity\LiquidationFiscality|null $liquidationFiscalities
-     *
-     * @return Property
-     */
-    public function setLiquidationFiscalities(\AppBundle\Entity\LiquidationFiscality $liquidationFiscalities = null)
-    {
-        $this->liquidationFiscalities = $liquidationFiscalities;
-
-        return $this;
-    }
-
-    /**
-     * Get liquidationFiscalities.
-     *
-     * @return \AppBundle\Entity\LiquidationFiscality|null
-     */
-    public function getLiquidationFiscalities()
-    {
-        return $this->liquidationFiscalities;
-    }
 }

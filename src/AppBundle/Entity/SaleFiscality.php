@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SaleFiscality
 {
+    
+    const lifeInsurance  = 'life-insurance';
+    const deathInsurance = 'death-insurance';
+    const realEstate     = 'real-estate';
+    const financial      = 'financial';
+    const pea            = 'pea';
     /**
      * @var int
      *

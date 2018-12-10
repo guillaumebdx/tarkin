@@ -5,6 +5,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use AppBundle\Entity\SaleFiscality;
+use AppBundle\Entity\LawPosition;
 
 
 class SaleFiscalityFixtures extends Fixture implements ORMFixtureInterface
@@ -16,27 +17,27 @@ class SaleFiscalityFixtures extends Fixture implements ORMFixtureInterface
     {
         $saleFiscality = new SaleFiscality();
         $saleFiscality->setName('Assurance vie');
-        $saleFiscality->setIdentifier('life-insurance');
+        $saleFiscality->setIdentifier(SaleFiscality::lifeInsurance);
         $manager->persist($saleFiscality);
         
         $saleFiscality = new SaleFiscality();
         $saleFiscality->setName('Capital décés');
-        $saleFiscality->setIdentifier('death-insurance');
+        $saleFiscality->setIdentifier(SaleFiscality::deathInsurance);
         $manager->persist($saleFiscality);
         
         $saleFiscality = new SaleFiscality();
         $saleFiscality->setName('Immobilier');
-        $saleFiscality->setIdentifier('real-estate');
+        $saleFiscality->setIdentifier(SaleFiscality::realEstate);
         $manager->persist($saleFiscality);
         
         $saleFiscality = new SaleFiscality();
         $saleFiscality->setName('Financier');
-        $saleFiscality->setIdentifier('financial');
+        $saleFiscality->setIdentifier(SaleFiscality::financial);
         $manager->persist($saleFiscality);
         
         $saleFiscality = new SaleFiscality();
         $saleFiscality->setName('PEA');
-        $saleFiscality->setIdentifier('pea');
+        $saleFiscality->setIdentifier(SaleFiscality::pea);
         $manager->persist($saleFiscality);
         
         

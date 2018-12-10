@@ -57,6 +57,24 @@ class PropertyType
      * @ORM\Column(name="financial", type="boolean")
      */
     private $financial;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="SaleFiscality", inversedBy="saleFiscality")
+     * @ORM\JoinColumn(name="sale_fiscality_id", referencedColumnName="id")
+     */
+    private $saleFiscality;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="InterestFiscality", inversedBy="interestFiscality")
+     * @ORM\JoinColumn(name="interest_fiscality_id", referencedColumnName="id")
+     */
+    private $interestFiscality;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="LiquidationFiscality", inversedBy="liquidationFiscality")
+     * @ORM\JoinColumn(name="liquidation_fiscality_id", referencedColumnName="id")
+     */
+    private $liquidationFiscality;
 
     /**
      * Set cradle.
@@ -137,5 +155,77 @@ class PropertyType
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    /**
+     * Set saleFiscality.
+     *
+     * @param \AppBundle\Entity\SaleFiscality|null $saleFiscality
+     *
+     * @return PropertyType
+     */
+    public function setSaleFiscality(\AppBundle\Entity\SaleFiscality $saleFiscality = null)
+    {
+        $this->saleFiscality = $saleFiscality;
+
+        return $this;
+    }
+
+    /**
+     * Get saleFiscality.
+     *
+     * @return \AppBundle\Entity\SaleFiscality|null
+     */
+    public function getSaleFiscality()
+    {
+        return $this->saleFiscality;
+    }
+
+    /**
+     * Set interestFiscality.
+     *
+     * @param \AppBundle\Entity\InterestFiscality|null $interestFiscality
+     *
+     * @return PropertyType
+     */
+    public function setInterestFiscality(\AppBundle\Entity\InterestFiscality $interestFiscality = null)
+    {
+        $this->interestFiscality = $interestFiscality;
+
+        return $this;
+    }
+
+    /**
+     * Get interestFiscality.
+     *
+     * @return \AppBundle\Entity\InterestFiscality|null
+     */
+    public function getInterestFiscality()
+    {
+        return $this->interestFiscality;
+    }
+
+    /**
+     * Set liquidationFiscality.
+     *
+     * @param \AppBundle\Entity\LiquidationFiscality|null $liquidationFiscality
+     *
+     * @return PropertyType
+     */
+    public function setLiquidationFiscality(\AppBundle\Entity\LiquidationFiscality $liquidationFiscality = null)
+    {
+        $this->liquidationFiscality = $liquidationFiscality;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidationFiscality.
+     *
+     * @return \AppBundle\Entity\LiquidationFiscality|null
+     */
+    public function getLiquidationFiscality()
+    {
+        return $this->liquidationFiscality;
     }
 }

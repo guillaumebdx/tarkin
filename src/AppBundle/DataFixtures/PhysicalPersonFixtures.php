@@ -4,10 +4,12 @@ namespace AppBundle\DataFixtures;
 use AppBundle\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use AppBundle\Entity\PhysicalPerson;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use AppBundle\Entity\FamilyPosition;
+use AppBundle\Entity\LawPosition;
 
-class PhysicalPersonFixtures extends Fixture implements ORMFixtureInterface
+class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterface
 
 {
 
@@ -15,10 +17,29 @@ class PhysicalPersonFixtures extends Fixture implements ORMFixtureInterface
     public function load(ObjectManager $manager)
     {
         $physicalPerson = new PhysicalPerson();
-        $physicalPerson->setBirthDate('1981-11-18');
+        $physicalPerson->setFirstName('Jean');
+        $physicalPerson->setName('Démo');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
         $physicalPerson->setCradle(true);
-
+        $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::commonCommunity));
+        $physicalPerson->setLawPosition($lawPosition);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Démo'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        $manager->flush();
     }
+
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+            FamilyPositionFixtures::class,
+            LawPositionFixtures::class,            
+        );
+    }
+
     
     
 }
