@@ -35,6 +35,12 @@ class FiscalityAmountBearing
      */
     private $rate;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="amount", type="integer")
+     */
+    private $amount;
 
     /**
      * Get id.
@@ -68,5 +74,29 @@ class FiscalityAmountBearing
     public function getRate()
     {
         return $this->rate;
+    }
+
+    /**
+     * Set fiscalityYearBearings.
+     *
+     * @param \AppBundle\Entity\FiscalityYearBearing|null $fiscalityYearBearings
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setFiscalityYearBearings(\AppBundle\Entity\FiscalityYearBearing $fiscalityYearBearings = null)
+    {
+        $this->fiscalityYearBearings = $fiscalityYearBearings;
+
+        return $this;
+    }
+
+    /**
+     * Get fiscalityYearBearings.
+     *
+     * @return \AppBundle\Entity\FiscalityYearBearing|null
+     */
+    public function getFiscalityYearBearings()
+    {
+        return $this->fiscalityYearBearings;
     }
 }

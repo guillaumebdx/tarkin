@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class LiquidationFiscality
 {
 
-
+    const lifeInsurance = 'life-insurance';
+    const inherit       = 'inherit';
     /**
      * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
      * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
@@ -21,7 +22,7 @@ class LiquidationFiscality
     private $lawPositions;
     
     /**
-     * @ORM\ManyToOne(targetEntity="FiscalityAmountBearing", inversedBy="fiscalityAmountBearings")
+     * @ORM\ManyToMany(targetEntity="FiscalityAmountBearing")
      * @ORM\JoinColumn(name="fiscality_amount_bearing_id", referencedColumnName="id")
      */
     private $fiscalityAmountBearings;
@@ -154,5 +155,38 @@ class LiquidationFiscality
     public function getFiscalityAmountBearings()
     {
         return $this->fiscalityAmountBearings;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->fiscalityAmountBearings = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add fiscalityAmountBearing.
+     *
+     * @param \AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing
+     *
+     * @return LiquidationFiscality
+     */
+    public function addFiscalityAmountBearing(\AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing)
+    {
+        $this->fiscalityAmountBearings[] = $fiscalityAmountBearing;
+
+        return $this;
+    }
+
+    /**
+     * Remove fiscalityAmountBearing.
+     *
+     * @param \AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeFiscalityAmountBearing(\AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing)
+    {
+        return $this->fiscalityAmountBearings->removeElement($fiscalityAmountBearing);
     }
 }

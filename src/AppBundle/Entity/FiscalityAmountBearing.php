@@ -35,7 +35,40 @@ class FiscalityAmountBearing
      */
     private $rate;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="amount", type="integer", nullable=true)
+     */
+    private $amount;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="LiquidationFiscality")
+     * @ORM\JoinColumn(name="liquidation_fiscality_id", referencedColumnName="id")
+     */
+    private $liquidationFiscalities;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->liquidationFiscalities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add liquidationFiscality.
+     *
+     * @param \AppBundle\Entity\LiquidationFiscality $liquidationFiscality
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function addLiquidationFiscality(\AppBundle\Entity\LiquidationFiscality $liquidationFiscality)
+    {
+        $this->liquidationFiscalities[] = $liquidationFiscality;
+        return $this;
+    }
+    
     /**
      * Get id.
      *
@@ -92,5 +125,29 @@ class FiscalityAmountBearing
     public function getFiscalityYearBearings()
     {
         return $this->fiscalityYearBearings;
+    }
+
+    /**
+     * Set amount.
+     *
+     * @param int $amount
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount.
+     *
+     * @return int
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 }

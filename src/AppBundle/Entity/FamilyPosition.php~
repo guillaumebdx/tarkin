@@ -14,6 +14,13 @@ class FamilyPosition
 {
 
 
+    const conjoint    = 'conjoint';
+    const sibling     = 'sibling';
+    const parent      = 'parent';
+    const child       = 'child';
+    const uncleAunt   = 'uncle-aunt';
+    const greatParent = 'great-parent';
+    const greatChild  = 'great-child';
     /**
      * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
      * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
@@ -99,5 +106,29 @@ class FamilyPosition
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    /**
+     * Set lawPositions.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPositions
+     *
+     * @return FamilyPosition
+     */
+    public function setLawPositions(\AppBundle\Entity\LawPosition $lawPositions = null)
+    {
+        $this->lawPositions = $lawPositions;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPositions.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPositions()
+    {
+        return $this->lawPositions;
     }
 }
