@@ -18,19 +18,17 @@ class LiquidationFiscalityFixtures extends Fixture implements DependentFixtureIn
  */
     public function load(ObjectManager $manager)
     {
-        $liquidationFiscality = new LiquidationFiscality();
-        $liquidationFiscality->setName('Assurance vie');
-        $liquidationFiscality->setIdentifier(LiquidationFiscality::lifeInsurance);
-        $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::sibling));
-        $liquidationFiscality->setLawPositions($lawPosition);
-        $manager->persist($liquidationFiscality);
+            $liquidationFiscality = new LiquidationFiscality();
+            $liquidationFiscality->setName('Assurance Vie');
+            $liquidationFiscality->setIdentifier(LiquidationFiscality::lifeInsurance);
+            $manager->persist($liquidationFiscality);
         
-        $liquidationFiscality = new LiquidationFiscality();
-        $liquidationFiscality->setName('Succession');
-        $liquidationFiscality->setIdentifier(LiquidationFiscality::inherit);
-        $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::sibling));
-        $liquidationFiscality->setLawPositions($lawPosition);
-        $manager->persist($liquidationFiscality);
+        
+            $liquidationFiscality = new LiquidationFiscality();
+            $liquidationFiscality->setName('Succession');
+            $liquidationFiscality->setIdentifier(LiquidationFiscality::inherit);
+            $manager->persist($liquidationFiscality);
+        
 
         $manager->flush();       
     }

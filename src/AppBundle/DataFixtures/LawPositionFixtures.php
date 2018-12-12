@@ -78,6 +78,16 @@ class LawPositionFixtures extends Fixture implements ORMFixtureInterface
         $lawPosition->setIdentifier(LawPosition::greatChild);
         $lawPosition->setSpouse(false);
         $manager->persist($lawPosition);
+        
+        $lawPosition = new LawPosition();
+        $lawPosition->setIdentifier(LawPosition::upToFourthDegree);
+        $lawPosition->setSpouse(false);
+        $manager->persist($lawPosition);
+        
+        $lawPosition = new LawPosition();
+        $lawPosition->setIdentifier(LawPosition::beyondFourthDegree);
+        $lawPosition->setSpouse(false);
+        $manager->persist($lawPosition);
 
         
         $manager->flush();

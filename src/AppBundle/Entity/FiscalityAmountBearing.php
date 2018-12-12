@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class FiscalityAmountBearing
 {
 
+    /**
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPositions;
 
     /**
      * @ORM\ManyToOne(targetEntity="FiscalityYearBearing", inversedBy="fiscalityYearBearings")
@@ -54,6 +59,30 @@ class FiscalityAmountBearing
     public function __construct()
     {
         $this->liquidationFiscalities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set lawPositions.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPositions
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setLawPositions(\AppBundle\Entity\LawPosition $lawPositions = null)
+    {
+        $this->lawPositions = $lawPositions;
+        
+        return $this;
+    }
+    
+    /**
+     * Get lawPositions.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPositions()
+    {
+        return $this->lawPositions;
     }
     
     /**

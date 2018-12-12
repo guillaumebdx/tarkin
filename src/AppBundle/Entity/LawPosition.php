@@ -26,6 +26,8 @@ class LawPosition
     const uncleAunt          = 'uncle-aunt';
     const greatParent        = 'great-parent';
     const greatChild         = 'great-child';
+    const upToFourthDegree   = 'up-to-fourth-degree';
+    const beyondFourthDegree = 'betond-fourth-degree';
     
     
     /**

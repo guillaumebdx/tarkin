@@ -15,11 +15,7 @@ class LiquidationFiscality
 
     const lifeInsurance = 'life-insurance';
     const inherit       = 'inherit';
-    /**
-     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
-     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
-     */
-    private $lawPositions;
+
     
     /**
      * @ORM\ManyToMany(targetEntity="FiscalityAmountBearing")
@@ -39,14 +35,14 @@ class LiquidationFiscality
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="identifier", type="string", length=255, unique=true)
+     * @ORM\Column(name="identifier", type="string", length=255, unique=false)
      */
     private $identifier;
 
@@ -109,29 +105,7 @@ class LiquidationFiscality
         return $this->identifier;
     }
 
-    /**
-     * Set lawPositions.
-     *
-     * @param \AppBundle\Entity\LawPosition|null $lawPositions
-     *
-     * @return LiquidationFiscality
-     */
-    public function setLawPositions(\AppBundle\Entity\LawPosition $lawPositions = null)
-    {
-        $this->lawPositions = $lawPositions;
-
-        return $this;
-    }
-
-    /**
-     * Get lawPositions.
-     *
-     * @return \AppBundle\Entity\LawPosition|null
-     */
-    public function getLawPositions()
-    {
-        return $this->lawPositions;
-    }
+    
 
     /**
      * Set fiscalityAmountBearings.
