@@ -45,7 +45,7 @@ class FamilyPosition
     /**
      * @var string
      *
-     * @ORM\Column(name="identifier", type="string", length=255, unique=true)
+     * @ORM\Column(name="identifier", type="string", length=255)
      */
     private $identifier;
 

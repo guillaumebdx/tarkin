@@ -49,7 +49,7 @@ class LawPosition
     /**
      * @var string
      *
-     * @ORM\Column(name="identifier", type="string", length=255, unique=true)
+     * @ORM\Column(name="identifier", type="string", length=255)
      */
     private $identifier;
     
@@ -124,7 +124,7 @@ class LawPosition
      *
      * @return bool
      */
-    public function getSpouse()
+    public function isSpouse()
     {
         return $this->spouse;
     }
