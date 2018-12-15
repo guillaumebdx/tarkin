@@ -25,7 +25,10 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $acquirementType = $manager->getRepository(AcquirementType::class)->findOneBy(['identifier' => AcquirementType::duringMarriage ]);
         $property->setAcquirementTypes($acquirementType);
         $propertyType = $manager->getRepository(PropertyType::class)->findOneBy(['identifier' => PropertyType::bSaving]);
+        $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
+        $property->addPhysicalPerson($physicalPersons[0]);
         $property->setPropertyTypes($propertyType);
+        
         $manager->persist($property);
 
         $property = new Property();
@@ -36,6 +39,9 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $acquirementType = $manager->getRepository(AcquirementType::class)->findOneBy(['identifier' => AcquirementType::beforeMarriage]);
         $property->setAcquirementTypes($acquirementType);
         $propertyType = $manager->getRepository(PropertyType::class)->findOneBy(['identifier' => PropertyType::aSaving]);
+        $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
+        $property->addPhysicalPerson($physicalPersons[0]);
+        
         $property->setPropertyTypes($propertyType);
         $manager->persist($property);
         
@@ -48,6 +54,9 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $property->setAcquirementTypes($acquirementType);
         $propertyType = $manager->getRepository(PropertyType::class)->findOneBy(['identifier' => PropertyType::principalResidence]);
         $property->setPropertyTypes($propertyType);
+        $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
+        $property->addPhysicalPerson($physicalPersons[0]);
+        $property->addPhysicalPerson($physicalPersons[1]);
         $manager->persist($property);
         
         $property = new Property();
@@ -59,6 +68,9 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $property->setAcquirementTypes($acquirementType);
         $propertyType = $manager->getRepository(PropertyType::class)->findOneBy(['identifier' => PropertyType::rentalProperty]);
         $property->setPropertyTypes($propertyType);
+        $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
+        $property->addPhysicalPerson($physicalPersons[0]);
+        $property->addPhysicalPerson($physicalPersons[1]);
         $manager->persist($property);
 
         $manager->flush();
@@ -69,6 +81,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         return array(
             AcquirementTypeFixtures::class, 
             PropertyTypeFixtures::class,
+            PhysicalPersonFixtures::class,
         );
     }
 

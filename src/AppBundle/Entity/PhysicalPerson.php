@@ -17,8 +17,8 @@ class PhysicalPerson
 
 
     /**
-    * @ORM\ManyToMany(targetEntity="Property", inversedBy="physicalPersons")
-    * @ORM\JoinTable(name="physical_person_property")
+    * @ORM\ManyToMany(targetEntity="Property", mappedBy="physicalPersons")
+    * 
     */
     
     private $properties;

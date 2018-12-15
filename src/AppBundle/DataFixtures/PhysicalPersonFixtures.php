@@ -25,11 +25,6 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
-        $property = $manager->getRepository(Property::class)->findAll();
-        $physicalPerson->addProperty($property[0]);
-        $physicalPerson->addProperty($property[1]);
-        $physicalPerson->addProperty($property[2]);
-        $physicalPerson->addProperty($property[3]);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -41,8 +36,6 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
-        $property = $manager->getRepository(Property::class)->findAll();
-        $physicalPerson->addProperty($property[3]);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -64,8 +57,7 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         return array(
             UserFixtures::class,
             FamilyPositionFixtures::class,
-            PropertyFixtures::class,
-        
+       
         );
     }
 
