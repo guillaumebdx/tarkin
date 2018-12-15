@@ -20,7 +20,7 @@ class PropertyTypeController extends Controller
      * @Rest\View()
      * @Rest\Get("/api/properties/financial")
      */
-    public function getFinancialPropertyTypeList(Request $request)
+    public function getFinancialPropertyTypeListAction(Request $request)
     {
         try {
             $em                 = $this->getDoctrine()->getManager();
@@ -50,7 +50,7 @@ class PropertyTypeController extends Controller
      * @Rest\View()
      * @Rest\Get("/api/properties/realestate")
      */
-    public function getRealestatePropertyTypeList(Request $request)
+    public function getRealestatePropertyTypeListAction(Request $request)
     {
         try {
             $em                 = $this->getDoctrine()->getManager();
