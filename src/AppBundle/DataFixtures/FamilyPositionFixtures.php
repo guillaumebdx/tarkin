@@ -21,30 +21,6 @@ class FamilyPositionFixtures extends Fixture implements ORMFixtureInterface
     public function load(ObjectManager $manager)
     {
 //         spouses
-        $familyPosition = new FamilyPosition();
-        $familyPosition->setName('Conjoint');
-        $familyPosition->setIdentifier(FamilyPosition::conjoint);
-        $manager->persist($familyPosition);
-        
-        $familyPosition = new FamilyPosition();
-        $familyPosition->setName('Conjoint');
-        $familyPosition->setIdentifier(FamilyPosition::conjoint);
-        $manager->persist($familyPosition);
-        
-        $familyPosition = new FamilyPosition();
-        $familyPosition->setName('Conjoint');
-        $familyPosition->setIdentifier(FamilyPosition::conjoint);
-        $manager->persist($familyPosition);
-        
-        $familyPosition = new FamilyPosition();
-        $familyPosition->setName('Conjoint');
-        $familyPosition->setIdentifier(FamilyPosition::conjoint);
-        $manager->persist($familyPosition);
-        
-        $familyPosition = new FamilyPosition();
-        $familyPosition->setName('Conjoint');
-        $familyPosition->setIdentifier(FamilyPosition::conjoint);
-        $manager->persist($familyPosition);
         
         $familyPosition = new FamilyPosition();
         $familyPosition->setName('Conjoint');

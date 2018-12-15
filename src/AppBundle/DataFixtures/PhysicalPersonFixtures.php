@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\PhysicalPerson;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use AppBundle\Entity\FamilyPosition;
+use AppBundle\Entity\Property;
 
 class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterface
 
@@ -16,7 +17,7 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $physicalPerson = new PhysicalPerson();
-        $physicalPerson->setFirstName('Jean');
+        $physicalPerson->setFirstName('Guillaume');
         $physicalPerson->setName('Démo');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
         $physicalPerson->setCradle(true);
@@ -24,7 +25,37 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $property = $manager->getRepository(Property::class)->findAll();
+        $physicalPerson->addProperty($property[0]);
+        $physicalPerson->addProperty($property[1]);
+        $physicalPerson->addProperty($property[2]);
+        $physicalPerson->addProperty($property[3]);
         $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Johanne');
+        $physicalPerson->setName('Démo');
+        $physicalPerson->setBirthDate(new \DateTime('1981-09-08'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Démo'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $property = $manager->getRepository(Property::class)->findAll();
+        $physicalPerson->addProperty($property[3]);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Paul');
+        $physicalPerson->setName('Démo');
+        $physicalPerson->setBirthDate(new \DateTime('2004-02-03'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Démo'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
         $manager->flush();
     }
 
@@ -33,6 +64,7 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         return array(
             UserFixtures::class,
             FamilyPositionFixtures::class,
+            PropertyFixtures::class,
         
         );
     }
