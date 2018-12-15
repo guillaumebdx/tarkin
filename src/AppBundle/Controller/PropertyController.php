@@ -75,12 +75,12 @@ class PropertyController extends Controller
             }
             
             return new JsonResponse($persons);
-    } catch (\Exception $exception) {
-        return new Response(
-            'Problème d\'appel à l\'API <pre>' . $exception,
-            Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-    }    
+        } catch (\Exception $exception) {
+            return new Response(
+                'Problème d\'appel à l\'API <pre>' . $exception,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+        }    
     }
     
     /**
