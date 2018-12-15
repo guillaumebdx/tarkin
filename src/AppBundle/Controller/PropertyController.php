@@ -10,7 +10,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\PhysicalPerson;
 use AppBundle\Entity\Property;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use AppBundle\Entity\User;
+use AppBundle\Entity\PropertyType;
+use AppBundle\Entity\AcquirementType;
 
 
 class PropertyController extends Controller
@@ -78,6 +81,49 @@ class PropertyController extends Controller
             Response::HTTP_INTERNAL_SERVER_ERROR
             );
     }    
+    }
+    
+    /**
+     * 
+     * @Rest\View()
+     * @Rest\RequestParam(name="personId")
+     * @Rest\RequestParam(name="name")
+     * @Rest\RequestParam(name="value")
+     * @Rest\RequestParam(name="returnRate")
+     * @Rest\RequestParam(name="propertyTypeId")
+     * @Rest\RequestParam(name="acquirementTypeId")
+     * @Rest\RequestParam(name="acquirementDate")
+     * 
+     * @Rest\Post("/api/new-property")
+     */
+    public function createPropertyAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $em                = $this->getDoctrine()->getManager();
+        $personId          = $paramFetcher->get('personId');
+        $name              = $paramFetcher->get('name');
+        $value             = $paramFetcher->get('value');
+        $returnRate        = $paramFetcher->get('returnRate');
+        $propertyTypeId    = $paramFetcher->get('propertyTypeId');
+        $acquirementTypeId = $paramFetcher->get('acquirementTypeId');
+        $acquirementDate   = $paramFetcher->get('acquirementDate');
+        
+        $property = new Property();
+        $property->setName($name);
+        $property->setValue($value);
+        $property->setReturnRate($returnRate);
+        $person = $em->getRepository(PhysicalPerson::class)->find($personId);
+        $property->addPhysicalPerson($person);
+        $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
+        $property->setPropertyTypes($propertyType);
+        $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
+        $property->setAcquirementTypes($acquirementType);
+        $property->setAcquirementDate(new \DateTime($acquirementDate));
+
+         $em->persist($property);
+         $em->flush();
+     
+        
+        return new JsonResponse( $name . ' a bien été créé');
     }
     
     
