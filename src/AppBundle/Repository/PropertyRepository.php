@@ -13,7 +13,11 @@ use AppBundle\Entity\PhysicalPerson;
 class PropertyRepository extends \Doctrine\ORM\EntityRepository
 {
 
-
+    /**
+     * 
+     * @param PhysicalPerson $physicalPerson
+     * @return array
+     */
     public function findByPhysicalPerson(PhysicalPerson $physicalPerson)
     {
         $query = $this->createQueryBuilder('a')

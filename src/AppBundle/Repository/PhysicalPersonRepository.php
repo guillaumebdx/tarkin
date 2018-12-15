@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Property;
+
 /**
  * PhysicalPersonRepository
  *
@@ -10,4 +12,27 @@ namespace AppBundle\Repository;
  */
 class PhysicalPersonRepository extends \Doctrine\ORM\EntityRepository
 {
+
+
+    /**
+     *
+     * @param Property $property
+     * @return array
+     */
+    public function findByProperty(Property $property)
+    {
+        $query = $this->createQueryBuilder('a')
+        ->select('a')
+        ->leftJoin('a.properties', 'c')
+        ->addSelect('c');
+        
+        $query = $query->add('where', $query->expr()->in('c', ':c'))
+        ->setParameter('c', $property)
+        ->getQuery()
+        ->getResult();
+        
+        return $query;
+    }
+
+
 }

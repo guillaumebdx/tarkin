@@ -21,9 +21,9 @@ class PropertyController extends Controller
      * Retrieve properties for a physical person
      *
      * @Rest\View()
-     * @Rest\Get("/api/user/{physicalPersonId}/properties")
+     * @Rest\Get("/api/person/{physicalPersonId}/properties")
      */
-    public function getPhysicalPersonsAction(Request $request)
+    public function getPropertiesAction(Request $request)
     {
         try {
             $em                   = $this->getDoctrine()->getManager();
@@ -56,11 +56,28 @@ class PropertyController extends Controller
      * Retrieve physical persons for a property
      *
      * @Rest\View()
-     * @Rest\Get("/api/user/{propertyId}/properties")
+     * @Rest\Get("/api/property/{propertyId}/persons")
      */
     public function getPhysicalPersonsAction(Request $request)
     {
-        
+        try {
+            $em                = $this->getDoctrine()->getManager();
+            $property          = $em->getRepository(Property::class)->find($request->get('propertyId'));
+            $personsCollection = $em->getRepository(PhysicalPerson::class)->findByProperty($property);
+            $persons           = [];
+            foreach ($personsCollection as $person) {
+                $persons[] = [
+                    'id' => $person->getId(),
+                ];
+            }
+            
+            return new JsonResponse($persons);
+    } catch (\Exception $exception) {
+        return new Response(
+            'Problème d\'appel à l\'API <pre>' . $exception,
+            Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+    }    
     }
     
     
