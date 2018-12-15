@@ -21,7 +21,7 @@ class LawPositionController extends Controller
      * @Rest\View()
      * @Rest\Get("/api/spouses-laws")
      */
-    public function getSpouseLaws(Request $request)
+    public function getSpouseLawsAction(Request $request)
     {
         try {
             $em                           = $this->getDoctrine()->getManager();

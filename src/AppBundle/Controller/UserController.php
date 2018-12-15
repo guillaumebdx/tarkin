@@ -20,7 +20,7 @@ class UserController extends Controller
      * @Rest\View()
      * @Rest\Get("/api/users")
      */
-    public function getUserList(Request $request)
+    public function getUserListAction(Request $request)
     {
         try {
             $em             = $this->getDoctrine()->getManager();
