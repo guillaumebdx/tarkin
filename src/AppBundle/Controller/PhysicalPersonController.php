@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\PhysicalPerson;
 use AppBundle\Entity\User;
+use FOS\RestBundle\Request\ParamFetcherInterface;
+use AppBundle\Entity\FamilyPosition;
 
 
 class PhysicalPersonController extends Controller
@@ -48,6 +50,49 @@ class PhysicalPersonController extends Controller
                 );
         }
         
+    }
+    
+    /**
+     *
+     * @Rest\View()
+     * @Rest\RequestParam(name="userId")
+     * @Rest\RequestParam(name="firstName")
+     * @Rest\RequestParam(name="name")
+     * @Rest\RequestParam(name="cradle")
+     * @Rest\RequestParam(name="birthDate")
+     * @Rest\RequestParam(name="familyPositionId")
+     * @Rest\RequestParam(name="parentId")
+     *
+     * @Rest\Post("/api/new-person")
+     */
+    public function createPhysicalPersonAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        $em               = $this->getDoctrine()->getManager();
+        $userId           = $paramFetcher->get('userId');
+        $firstName        = $paramFetcher->get('firstName');
+        $name             = $paramFetcher->get('name');
+        $cradle           = $paramFetcher->get('cradle');
+        $birthDate        = $paramFetcher->get('birthDate');
+        $familyPositionId = $paramFetcher->get('familyPositionId');
+        $parentId         = $paramFetcher->get('parentId');
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName($firstName);
+        $physicalPerson->setName($name);
+        $physicalPerson->setCradle($cradle);
+        $physicalPerson->setBirthDate(new \DateTime($birthDate));
+        $user = $em->getRepository(User::class)->find($userId);
+        $physicalPerson->setUser($user);
+        $familyPosition = $em->getRepository(FamilyPosition::class)->find($familyPositionId);
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $parent = $em->getRepository(PhysicalPerson::class)->find($parentId);
+        $physicalPerson->setParent($parent);
+        
+        $em->persist($physicalPerson);
+        $em->flush();
+        
+        
+        return new JsonResponse( $name . ' a bien été créé');
     }
     
     
