@@ -2,12 +2,12 @@
 namespace AppBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use AppBundle\Entity\LawPosition;
 use AppBundle\Entity\LiquidationFiscality;
 
-class LiquidationFiscalityFixtures extends Fixture implements DependentFixtureInterface
+class LiquidationFiscalityFixtures extends Fixture implements ORMFixtureInterface
 
 {
 
@@ -33,16 +33,5 @@ class LiquidationFiscalityFixtures extends Fixture implements DependentFixtureIn
         $manager->flush();       
     }
     
-/**
- * 
- * {@inheritDoc}
- * @see \Doctrine\Common\DataFixtures\DependentFixtureInterface::getDependencies()
- */
-    public function getDependencies()
-    {
-        return array(
-            LawPositionFixtures::class,
-        );
-    }
-    
+   
 }

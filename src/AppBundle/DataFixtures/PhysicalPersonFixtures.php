@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\PhysicalPerson;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use AppBundle\Entity\FamilyPosition;
-use AppBundle\Entity\LawPosition;
 
 class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterface
 
@@ -21,8 +20,6 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setName('Démo');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
         $physicalPerson->setCradle(true);
-        $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::commonCommunity));
-        $physicalPerson->setLawPosition($lawPosition);
         $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Démo'));
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
@@ -36,7 +33,7 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         return array(
             UserFixtures::class,
             FamilyPositionFixtures::class,
-            LawPositionFixtures::class,            
+        
         );
     }
 

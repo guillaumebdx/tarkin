@@ -21,11 +21,10 @@ class FamilyPosition
     const uncleAunt   = 'uncle-aunt';
     const greatParent = 'great-parent';
     const greatChild  = 'great-child';
-    /**
-     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
-     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
-     */
-    private $lawPositions;
+    const upToFourthDegree   = 'up-to-fourth-degree';
+    const beyondFourthDegree = 'betond-fourth-degree';
+
+    
     /**
      * @var int
      *

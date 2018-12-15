@@ -60,6 +60,12 @@ class LawPosition
      */
     private $spouse;
 
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="FamilyPosition")
+     */
+    private $familyPositions;
+
 
     /**
      * Class constructor
@@ -151,5 +157,18 @@ class LawPosition
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    public function setFamilyPosition($familyPosition)
+    {
+        $this->familyPositions = $familyPosition;
+        
+        return $this;
+    }
+    
+
+    public function getFamilyPosition()
+    {
+        return $this->familyPositions;
     }
 }
