@@ -72,3 +72,6 @@ swiftmailer:
 sensio_framework_extra:
    router:
         annotations: false
+        
+fos_rest:
+    param_fetcher_listener: true
