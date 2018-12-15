@@ -17,7 +17,8 @@ class PhysicalPerson
 
 
     /**
-    * @ORM\ManyToMany(targetEntity="Property", cascade={"persist"})
+    * @ORM\ManyToMany(targetEntity="Property", inversedBy="physicalPersons")
+    * @ORM\JoinTable(name="physical_person_property")
     */
     
     private $properties;
@@ -85,7 +86,6 @@ class PhysicalPerson
     public function __construct()
     {
         $this->properties      = new ArrayCollection(); 
-        $this->physicalPersons = new ArrayCollection();
     }
 
     public function addProperty(Property $property)    
@@ -178,11 +178,11 @@ class PhysicalPerson
     }
 
     /**
-     * Get cradle.
+     * Is cradle.
      *
      * @return bool
      */
-    public function getCradle()
+    public function isCradle()
     {
         return $this->cradle;
     }

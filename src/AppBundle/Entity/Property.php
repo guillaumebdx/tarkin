@@ -14,6 +14,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Property
 {
 
+    /**
+     * @ORM\ManyToMany(targetEntity="PhysicalPerson", mappedBy="properties")
+     * 
+     */
+    
+    private $physicalPersons;
 
     /**
      * @ORM\ManyToOne(targetEntity="PropertyType", inversedBy="propertyTypes")
@@ -65,7 +71,28 @@ class Property
      */
     private $acquirementDate;
 
-
+    public function __construct() 
+    {
+        $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function addPhysicalPerson(PhysicalPerson $physicalPerson)
+    {
+        $this->physicalPersons[] = $physicalPerson;
+        return $this;
+    }
+    
+    public function removePhysicalPerson(PhysicalPerson $physicalPerson)
+    {
+        $this->physicalPersons->removeElement($physicalPerson);
+    }
+    
+    public function getPhysicalPersons()
+    
+    {
+        return $this->physicalPersons;
+    }
+    
     /**
      * Get id.
      *
