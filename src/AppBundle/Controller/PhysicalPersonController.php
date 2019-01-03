@@ -41,8 +41,10 @@ class PhysicalPersonController extends Controller
                     'birth_date'      => $physicalPerson->getBirthDate()->format('Y/m/d'),
                 ];
             }
+            $response = new JsonResponse($physicalPersons);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
                        
-            return new JsonResponse($physicalPersons);
+            return $response;
         } catch (\Exception $exception) {
             return new Response(
                 'Problème d\'appel à l\'API <pre>' . $exception,
