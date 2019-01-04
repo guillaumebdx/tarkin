@@ -49,6 +49,28 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setFamilyPosition($familyPosition);
         $manager->persist($physicalPerson);
         
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Marie');
+        $physicalPerson->setName('Démo');
+        $physicalPerson->setBirthDate(new \DateTime('2007-05-13'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Démo'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Jean');
+        $physicalPerson->setName('Démo');
+        $physicalPerson->setBirthDate(new \DateTime('2002-01-11'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Démo'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
         $manager->flush();
     }
 
