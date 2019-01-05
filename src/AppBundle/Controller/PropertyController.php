@@ -43,6 +43,7 @@ class PropertyController extends Controller
                     'type'                   => $property->getPropertyTypes()->getName(),
                     'acquirement_identifier' => $property->getAcquirementTypes()->getIdentifier(),
                     'acquirement'            => $property->getAcquirementTypes()->getName(),
+                    'financial'              => $property->getPropertyTypes()->getFinancial(),
                 ];
             }
                        
@@ -53,6 +54,41 @@ class PropertyController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
                 );
         }    
+    }
+    
+    /**
+     * Calculate properties sum for a physical person
+     *
+     * @Rest\View()
+     * @Rest\Get("/api/person/{physicalPersonId}/properties/sum")
+     */
+    public function getSumByPropertiesAction(Request $request)
+    {
+        try {
+            $em                   = $this->getDoctrine()->getManager();
+            $physicalPerson       = $em->getRepository(PhysicalPerson::class)->find($request->get('physicalPersonId'));
+            $propertiesCollection = $em->getRepository(Property::class)->findByPhysicalPerson($physicalPerson);
+            $realEstate           = 0;
+            $financial            = 0;
+            foreach ($propertiesCollection as $property) {
+                if ($property->getPropertyTypes()->getFinancial()) {
+                    $financial += $property->getValue();
+                }
+                if (!$property->getPropertyTypes()->getFinancial()) {
+                    $realEstate += $property->getValue();;
+                }
+            }
+            $propertiesSum = [
+                'realEstate' => $realEstate,
+                'financial'  => $financial,
+            ];
+            return new JsonResponse($propertiesSum);
+        } catch (\Exception $exception) {
+            return new Response(
+                'Problème d\'appel à l\'API <pre>' . $exception,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+        }
     }
 
     /**
