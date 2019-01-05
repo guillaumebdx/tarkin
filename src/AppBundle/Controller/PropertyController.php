@@ -82,7 +82,9 @@ class PropertyController extends Controller
                 'realEstate' => $realEstate,
                 'financial'  => $financial,
             ];
-            return new JsonResponse($propertiesSum);
+            $response = new JsonResponse($propertiesSum);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return new JsonResponse($response);
         } catch (\Exception $exception) {
             return new Response(
                 'Problème d\'appel à l\'API <pre>' . $exception,
