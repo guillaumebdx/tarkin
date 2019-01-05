@@ -84,7 +84,7 @@ class PropertyController extends Controller
             ];
             $response = new JsonResponse($propertiesSum);
             $response->headers->set('Access-Control-Allow-Origin', '*');
-            return new JsonResponse($response);
+            return $response;
         } catch (\Exception $exception) {
             return new Response(
                 'Problème d\'appel à l\'API <pre>' . $exception,
