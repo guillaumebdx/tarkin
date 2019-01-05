@@ -57,27 +57,32 @@ class PropertyController extends Controller
     }
     
     /**
-     * Calculate properties sum for a physical person
+     * Calculate properties sum for a family
      *
      * @Rest\View()
-     * @Rest\Get("/api/person/{physicalPersonId}/properties/sum")
+     * @Rest\Get("/api/person/{userId}/properties/sum")
      */
     public function getSumByPropertiesAction(Request $request)
     {
         try {
-            $em                   = $this->getDoctrine()->getManager();
-            $physicalPerson       = $em->getRepository(PhysicalPerson::class)->find($request->get('physicalPersonId'));
-            $propertiesCollection = $em->getRepository(Property::class)->findByPhysicalPerson($physicalPerson);
-            $realEstate           = 0;
-            $financial            = 0;
-            foreach ($propertiesCollection as $property) {
-                if ($property->getPropertyTypes()->getFinancial()) {
-                    $financial += $property->getValue();
-                }
-                if (!$property->getPropertyTypes()->getFinancial()) {
-                    $realEstate += $property->getValue();;
-                }
-            }
+             $em   = $this->getDoctrine()->getManager();
+             $user = $em->getRepository(User::class)->find($request->get('userId'));
+             $physicalPersonsCollection = $em->getRepository(PhysicalPerson::class)->findBy(['user' => $user]);
+             $realEstate = 0;
+             $financial  = 0;
+             foreach ($physicalPersonsCollection as $physicalPerson) {
+                 $propertiesCollection = $em->getRepository(Property::class)->findByPhysicalPerson($physicalPerson);
+                 foreach ($propertiesCollection as $property) {
+                     if ($property->getPropertyTypes()->getFinancial()) {
+                         $financial += $property->getValue();
+                     }
+                     if (!$property->getPropertyTypes()->getFinancial()) {
+                         $realEstate += $property->getValue();
+                     }
+                 }
+                 
+             }
+
             $propertiesSum = [
                 'realEstate' => $realEstate,
                 'financial'  => $financial,
