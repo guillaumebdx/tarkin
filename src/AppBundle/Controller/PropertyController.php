@@ -60,7 +60,7 @@ class PropertyController extends Controller
      * Calculate properties sum for a family
      *
      * @Rest\View()
-     * @Rest\Get("/api/person/{userId}/properties/sum")
+     * @Rest\Get("/api/user/{userId}/properties/sum")
      */
     public function getSumByPropertiesAction(Request $request)
     {
