@@ -34,8 +34,10 @@ class PropertyTypeController extends Controller
                     
                 ];
             }
+            $response = new JsonResponse($properties);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
                        
-            return new JsonResponse($properties);
+            return $response;
         } catch (\Exception $exception) {
             return new Response(
                 'Problème d\'appel à l\'API ' . $exception,
@@ -64,8 +66,9 @@ class PropertyTypeController extends Controller
                     
                 ];
             }
-            
-            return new JsonResponse($properties);
+            $response = new JsonResponse($properties);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return $response;
         } catch (\Exception $exception) {
             return new Response(
                 'Problème d\'appel à l\'API ' . $exception,
