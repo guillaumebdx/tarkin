@@ -35,7 +35,9 @@ class FamilyPositionController extends Controller
                 ];
             }
                        
-            return new JsonResponse($familyPositions);
+            $response = new JsonResponse($familyPositions);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return $response;
         } catch (\Exception $exception) {
             return new Response(
                 'Problème d\'appel à l\'API <pre>' . $exception,
