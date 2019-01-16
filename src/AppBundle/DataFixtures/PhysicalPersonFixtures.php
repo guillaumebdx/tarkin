@@ -42,7 +42,7 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setFirstName('Jaden');
         $physicalPerson->setName('Diarra');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
-        $physicalPerson->setCradle(true);
+        $physicalPerson->setCradle(false);
         $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Diarra'));
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
