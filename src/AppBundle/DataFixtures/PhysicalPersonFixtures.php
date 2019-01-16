@@ -17,6 +17,39 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Thibault');
+        $physicalPerson->setName('Diarra');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Diarra'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Claudia');
+        $physicalPerson->setName('Diarra');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Diarra'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Jaden');
+        $physicalPerson->setName('Diarra');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Diarra'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Guillaume');
         $physicalPerson->setName('Démo');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
