@@ -69,6 +69,7 @@ class PhysicalPersonController extends Controller
      */
     public function createPhysicalPersonAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
+        try {
         $em               = $this->getDoctrine()->getManager();
         $userId           = $paramFetcher->get('userId');
         $firstName        = $paramFetcher->get('firstName');
@@ -95,6 +96,12 @@ class PhysicalPersonController extends Controller
         
         
         return new JsonResponse( $name . ' a bien été créé');
+        } catch (\Exception $exception) {
+            return new Response(
+                'Problème d\'appel à l\'API <pre>' . $exception,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+        }
     }
     
     
