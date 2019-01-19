@@ -305,4 +305,15 @@ class PhysicalPerson
     {
         return $this->parents;
     }
+    
+    public  function getParentIds()
+    {
+        $parentIds = [];
+        
+        foreach ($this->parents as $parent) {
+            $parentIds[] = $parent->getId();
+        }
+        
+        return $parentIds; 
+    }
 }

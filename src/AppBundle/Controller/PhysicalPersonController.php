@@ -39,7 +39,7 @@ class PhysicalPersonController extends Controller
                     'family_position' => $physicalPerson->getFamilyPosition()->getName(),
                     'cradle'          => $physicalPerson->isCradle(),
                     'birth_date'      => $physicalPerson->getBirthDate()->format('Y/m/d'),
-                    'parents'         => $physicalPerson->getParents(),
+                    'parents'         => $physicalPerson->getParentIds(),
                 ];
             }
             $response = new JsonResponse($physicalPersons);
