@@ -17,7 +17,8 @@ class PhysicalPerson
 
 
     /**
-    * @ORM\ManyToMany(targetEntity="Property", cascade={"persist"})
+    * @ORM\ManyToMany(targetEntity="Property", mappedBy="physicalPersons")
+    * 
     */
     
     private $properties;
@@ -35,20 +36,11 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
-     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="physicalPersons")
-     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
-     */
-    private $lawPosition;
-    /**
-     * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="physicalPersons")
+     * @ORM\ManyToMany(targetEntity="PhysicalPerson", inversedBy="physicalPerson")
      * @ORM\JoinColumn(nullable=true, onDelete="cascade")
      */
-    private $parent;
+    private $parents;
     
-    /**
-     * @ORM\OneToMany(targetEntity="PhysicalPerson", mappedBy="parent")
-     */
-    private $physicalPersons;
     
     /**
      * @var int
@@ -90,7 +82,6 @@ class PhysicalPerson
     public function __construct()
     {
         $this->properties      = new ArrayCollection(); 
-        $this->physicalPersons = new ArrayCollection();
     }
 
     public function addProperty(Property $property)    
@@ -183,11 +174,11 @@ class PhysicalPerson
     }
 
     /**
-     * Get cradle.
+     * Is cradle.
      *
      * @return bool
      */
-    public function getCradle()
+    public function isCradle()
     {
         return $this->cradle;
     }
@@ -324,27 +315,50 @@ class PhysicalPerson
         return $this->physicalPersons;
     }
 
+
     /**
-     * Set lawPosition.
+     * Get cradle.
      *
-     * @param \AppBundle\Entity\LawPosition|null $lawPosition
+     * @return bool
+     */
+    public function getCradle()
+    {
+        return $this->cradle;
+    }
+
+    /**
+     * Add parent.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $parent
      *
      * @return PhysicalPerson
      */
-    public function setLawPosition(\AppBundle\Entity\LawPosition $lawPosition = null)
+    public function addParent(\AppBundle\Entity\PhysicalPerson $parent)
     {
-        $this->lawPosition = $lawPosition;
+        $this->parents[] = $parent;
 
         return $this;
     }
 
     /**
-     * Get lawPosition.
+     * Remove parent.
      *
-     * @return \AppBundle\Entity\LawPosition|null
+     * @param \AppBundle\Entity\PhysicalPerson $parent
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function getLawPosition()
+    public function removeParent(\AppBundle\Entity\PhysicalPerson $parent)
     {
-        return $this->lawPosition;
+        return $this->parents->removeElement($parent);
+    }
+
+    /**
+     * Get parents.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParents()
+    {
+        return $this->parents;
     }
 }

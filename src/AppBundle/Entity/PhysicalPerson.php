@@ -36,10 +36,10 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="physicalPersons")
+     * @ORM\ManyToMany(targetEntity="PhysicalPerson", inversedBy="physicalPerson")
      * @ORM\JoinColumn(nullable=true, onDelete="cascade")
      */
-    private $parent;
+    private $parents;
     
     /**
      * @ORM\OneToMany(targetEntity="PhysicalPerson", mappedBy="parent")
@@ -278,9 +278,9 @@ class PhysicalPerson
      *
      * @return \AppBundle\Entity\PhysicalPerson|null
      */
-    public function getParent()
+    public function getParents()
     {
-        return $this->parent;
+        return $this->parents;
     }
 
     /**
@@ -290,9 +290,9 @@ class PhysicalPerson
      *
      * @return PhysicalPerson
      */
-    public function addPhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    public function addParent(\AppBundle\Entity\PhysicalPerson $physicalPerson)
     {
-        $this->physicalPersons[] = $physicalPerson;
+        $this->parents[] = $physicalPerson;
 
         return $this;
     }
