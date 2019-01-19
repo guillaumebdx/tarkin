@@ -274,9 +274,9 @@ class PhysicalPerson
     }
     
     /**
-     * Get parent.
+     * Get parents.
      *
-     * @return \AppBundle\Entity\PhysicalPerson|null
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getParents()
     {
