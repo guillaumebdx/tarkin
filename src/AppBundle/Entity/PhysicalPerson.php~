@@ -255,29 +255,7 @@ class PhysicalPerson
         return $this->familyPosition;
     }
 
-    /**
-     * Set parent.
-     *
-     * @param \AppBundle\Entity\PhysicalPerson|null $parent
-     *
-     * @return PhysicalPerson
-     */
-    public function setParent(\AppBundle\Entity\PhysicalPerson $parent = null)
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
     
-    /**
-     * Get parent.
-     *
-     * @return \AppBundle\Entity\PhysicalPerson|null
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
 
     /**
      * Add physicalPerson.
@@ -286,79 +264,13 @@ class PhysicalPerson
      *
      * @return PhysicalPerson
      */
-    public function addPhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    public function addParent(\AppBundle\Entity\PhysicalPerson $physicalPerson)
     {
-        $this->physicalPersons[] = $physicalPerson;
+        $this->parents[] = $physicalPerson;
 
         return $this;
     }
 
-    /**
-     * Remove physicalPerson.
-     *
-     * @param \AppBundle\Entity\PhysicalPerson $physicalPerson
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removePhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
-    {
-        return $this->physicalPersons->removeElement($physicalPerson);
-    }
-
-    /**
-     * Get physicalPersons.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPhysicalPersons()
-    {
-        return $this->physicalPersons;
-    }
 
 
-    /**
-     * Get cradle.
-     *
-     * @return bool
-     */
-    public function getCradle()
-    {
-        return $this->cradle;
-    }
-
-    /**
-     * Add parent.
-     *
-     * @param \AppBundle\Entity\PhysicalPerson $parent
-     *
-     * @return PhysicalPerson
-     */
-    public function addParent(\AppBundle\Entity\PhysicalPerson $parent)
-    {
-        $this->parents[] = $parent;
-
-        return $this;
-    }
-
-    /**
-     * Remove parent.
-     *
-     * @param \AppBundle\Entity\PhysicalPerson $parent
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeParent(\AppBundle\Entity\PhysicalPerson $parent)
-    {
-        return $this->parents->removeElement($parent);
-    }
-
-    /**
-     * Get parents.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getParents()
-    {
-        return $this->parents;
-    }
 }

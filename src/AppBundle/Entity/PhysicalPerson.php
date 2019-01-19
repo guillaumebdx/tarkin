@@ -41,10 +41,6 @@ class PhysicalPerson
      */
     private $parents;
     
-    /**
-     * @ORM\OneToMany(targetEntity="PhysicalPerson", mappedBy="parent")
-     */
-    private $physicalPersons;
     
     /**
      * @var int
@@ -259,29 +255,7 @@ class PhysicalPerson
         return $this->familyPosition;
     }
 
-    /**
-     * Set parent.
-     *
-     * @param \AppBundle\Entity\PhysicalPerson|null $parent
-     *
-     * @return PhysicalPerson
-     */
-    public function setParent(\AppBundle\Entity\PhysicalPerson $parent = null)
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
     
-    /**
-     * Get parents.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getParents()
-    {
-        return $this->parents;
-    }
 
     /**
      * Add physicalPerson.
@@ -297,26 +271,38 @@ class PhysicalPerson
         return $this;
     }
 
+
+
+
     /**
-     * Remove physicalPerson.
+     * Get cradle.
      *
-     * @param \AppBundle\Entity\PhysicalPerson $physicalPerson
+     * @return bool
+     */
+    public function getCradle()
+    {
+        return $this->cradle;
+    }
+
+    /**
+     * Remove parent.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $parent
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removePhysicalPerson(\AppBundle\Entity\PhysicalPerson $physicalPerson)
+    public function removeParent(\AppBundle\Entity\PhysicalPerson $parent)
     {
-        return $this->physicalPersons->removeElement($physicalPerson);
+        return $this->parents->removeElement($parent);
     }
 
     /**
-     * Get physicalPersons.
+     * Get parents.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPhysicalPersons()
+    public function getParents()
     {
-        return $this->physicalPersons;
+        return $this->parents;
     }
-
 }
