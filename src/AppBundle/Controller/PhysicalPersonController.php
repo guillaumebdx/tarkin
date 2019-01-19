@@ -77,7 +77,7 @@ class PhysicalPersonController extends Controller
         $cradle           = $paramFetcher->get('cradle');
         $birthDate        = $paramFetcher->get('birthDate');
         $familyPositionId = $paramFetcher->get('familyPositionId');
-        $parentId         = $paramFetcher->get('parentId');
+        $parentIds        = $paramFetcher->get('parents');
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName($firstName);
@@ -88,8 +88,10 @@ class PhysicalPersonController extends Controller
         $physicalPerson->setUser($user);
         $familyPosition = $em->getRepository(FamilyPosition::class)->find($familyPositionId);
         $physicalPerson->setFamilyPosition($familyPosition);
-        $parent = $em->getRepository(PhysicalPerson::class)->find($parentId);
-        $physicalPerson->setParent($parent);
+        foreach ($parentIds as $parentId) {
+            $parent = $em->getRepository(PhysicalPerson::class)->find($parentId);
+            $physicalPerson->addParent($parent);
+        }
         
         $em->persist($physicalPerson);
         $em->flush();
