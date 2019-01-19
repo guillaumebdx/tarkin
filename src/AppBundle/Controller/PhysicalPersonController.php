@@ -63,7 +63,7 @@ class PhysicalPersonController extends Controller
      * @Rest\RequestParam(name="cradle")
      * @Rest\RequestParam(name="birthDate")
      * @Rest\RequestParam(name="familyPositionId")
-     * @Rest\RequestParam(name="parentId")
+     * @Rest\RequestParam(name="parentIds")
      *
      * @Rest\Post("/api/new-person")
      */
