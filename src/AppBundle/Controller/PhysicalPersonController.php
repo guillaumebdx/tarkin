@@ -77,7 +77,7 @@ class PhysicalPersonController extends Controller
         $cradle           = $paramFetcher->get('cradle');
         $birthDate        = $paramFetcher->get('birthDate');
         $familyPositionId = $paramFetcher->get('familyPositionId');
-        $parentIds        = $paramFetcher->get('parents');
+        $parentIds        = $paramFetcher->get('parentIds');
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName($firstName);
