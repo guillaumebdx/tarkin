@@ -17,6 +17,28 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Benoit');
+        $physicalPerson->setName('Dupont');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Dupont'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Xavier');
+        $physicalPerson->setName('Diarra');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Coupé'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Thibault');
         $physicalPerson->setName('Diarra');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
