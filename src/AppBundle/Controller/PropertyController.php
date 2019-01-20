@@ -57,6 +57,47 @@ class PropertyController extends Controller
     }
     
     /**
+     * Retrieve properties for a user (family)
+     *
+     * @Rest\View()
+     * @Rest\Get("/api/user/{userId}/properties")
+     */
+    public function getPropertiesByUserAction(Request $request)
+    {
+        try {
+            $em                   = $this->getDoctrine()->getManager();
+            $user                 = $em->getRepository(User::class)->find($request->get('userId'));
+            $properties           = [];
+            foreach ($user->getPhysicalPersons() as $physicalPerson) {
+                $propertiesCollection = $em->getRepository(Property::class)->findByPhysicalPerson($physicalPerson);
+                foreach ($propertiesCollection as $property) {
+                    $properties[] = [
+                        'id'                      => $property->getId(),
+                        'name'                    => $property->getName(),
+                        'value'                   => $property->getValue(),
+                        'returnRate'              => $property->getReturnRate(),
+                        'identifier_type'         => $property->getPropertyTypes()->getIdentifier(),
+                        'type'                    => $property->getPropertyTypes()->getName(),
+                        'acquirement_identifier'  => $property->getAcquirementTypes()->getIdentifier(),
+                        'acquirement'             => $property->getAcquirementTypes()->getName(),
+                        'physicalPersonId'        => $physicalPerson->getId(),
+                        'physicalPersonFirstName' => $physicalPerson->getFirstName(),
+                        'isFinancial'             => $property->getPropertyTypes()->getFinancial(),
+                    ];
+                }
+            }
+            
+            
+            return new JsonResponse($properties);
+        } catch (\Exception $exception) {
+            return new Response(
+                'Problème d\'appel à l\'API <pre>' . $exception,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+        }
+    }
+    
+    /**
      * Calculate properties sum for a family
      *
      * @Rest\View()
