@@ -17,16 +17,72 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $physicalPerson = new PhysicalPerson();
-        $physicalPerson->setFirstName('Benoit');
-        $physicalPerson->setName('Dupont');
+        $physicalPerson->setFirstName('Stan');
+        $physicalPerson->setName('CELIB');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
         $physicalPerson->setCradle(true);
-        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'Dupont'));
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST CELIB'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Isabelle');
+        $physicalPerson->setName('PACS');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST PACS'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Delphine');
+        $physicalPerson->setName('sep');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST SEPARATION DE BIENS'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Julie');
+        $physicalPerson->setName('conc');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST CONCUBIN'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Valérie');
+        $physicalPerson->setName('legale');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST REGIME LEGAL'));
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
         $manager->persist($physicalPerson);
 
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('John');
+        $physicalPerson->setName('com');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(true);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST COMM UNIV'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $manager->persist($physicalPerson);
+        
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Xavier');
         $physicalPerson->setName('Diarra');
