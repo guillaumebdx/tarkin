@@ -56,8 +56,25 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($lawPosition);
         
         $lawPosition = new LawPosition();
+        $lawPosition->setName('PACS (indivision)');
         $lawPosition->setIdentifier(LawPosition::individedPacs);
-        $lawPosition->setSpouse(false);
+        $lawPosition->setSpouse(true);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $lawPosition->setFamilyPosition($familyPosition);
+        $manager->persist($lawPosition);
+        
+        $lawPosition = new LawPosition();
+        $lawPosition->setName('PACS (séparation de biens)');
+        $lawPosition->setIdentifier(LawPosition::separatedPacs);
+        $lawPosition->setSpouse(true);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
+        $lawPosition->setFamilyPosition($familyPosition);
+        $manager->persist($lawPosition);
+        
+        $lawPosition = new LawPosition();
+        $lawPosition->setName('Concubinage');
+        $lawPosition->setIdentifier(LawPosition::cohabitPartner);
+        $lawPosition->setSpouse(true);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);

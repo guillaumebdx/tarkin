@@ -20,6 +20,8 @@ class LawPosition
     const universalCommunity = 'universal-community';
     const movableCommunity   = 'movable-community';
     const individedPacs      = 'individed-pacs';
+    const separatedPacs      = 'separated-pacs';
+    const cohabitPartner     = 'cohabit-partner';
     const sibling            = 'sibling';
     const parent             = 'parent';
     const child              = 'child';

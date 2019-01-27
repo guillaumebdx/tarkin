@@ -41,6 +41,62 @@ class UserFixtures extends Fixture implements ORMFixtureInterface
         $user->setPassword('demo');
         $manager->persist($user);
         
+        $user = new User();
+        $user->setEmail('thib@ult.di');
+        $user->setEmailCanonical('thib@ult.di');
+        $user->setNameReference('Diarra');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST CELIB');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST CELIB');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST PACS');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST SEPARATION DE BIENS');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST REGIME LEGAL');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST COMM UNIV');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
+        $user = new User();
+        $user->setEmail('a@a.fr');
+        $user->setEmailCanonical('a@a.fr');
+        $user->setNameReference('TEST CONCUBIN');
+        $user->setPassword('demo');
+        $manager->persist($user);
+        
         $manager->flush();
     }
     
