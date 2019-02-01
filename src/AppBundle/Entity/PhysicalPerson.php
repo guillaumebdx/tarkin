@@ -36,7 +36,7 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
-     * @ORM\ManyToOne(targetEntity="lawPosition", inversedBy="physicalPersons")
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="physicalPersons")
      * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
      */
     private $lawPosition;
