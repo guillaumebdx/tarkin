@@ -36,6 +36,12 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
+     * @ORM\ManyToOne(targetEntity="lawPosition", inversedBy="physicalPersons")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPosition;
+    
+    /**
      * @ORM\ManyToMany(targetEntity="PhysicalPerson", inversedBy="physicalPerson")
      * @ORM\JoinColumn(nullable=true, onDelete="cascade")
      */
@@ -273,4 +279,47 @@ class PhysicalPerson
 
 
 
+
+    /**
+     * Get cradle.
+     *
+     * @return bool
+     */
+    public function getCradle()
+    {
+        return $this->cradle;
+    }
+
+    /**
+     * Remove parent.
+     *
+     * @param \AppBundle\Entity\PhysicalPerson $parent
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeParent(\AppBundle\Entity\PhysicalPerson $parent)
+    {
+        return $this->parents->removeElement($parent);
+    }
+
+    /**
+     * Get parents.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParents()
+    {
+        return $this->parents;
+    }
+    
+    public  function getParentIds()
+    {
+        $parentIds = [];
+        
+        foreach ($this->parents as $parent) {
+            $parentIds[] = $parent->getId();
+        }
+        
+        return $parentIds; 
+    }
 }

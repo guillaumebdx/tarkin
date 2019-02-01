@@ -8,6 +8,7 @@ use AppBundle\Entity\PhysicalPerson;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use AppBundle\Entity\FamilyPosition;
 use AppBundle\Entity\Property;
+use AppBundle\Entity\LawPosition;
 
 class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterface
 
@@ -25,6 +26,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -36,6 +39,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::individedPacs));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -47,6 +52,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::separatedProperty));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -58,6 +65,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         
         
@@ -70,6 +79,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::commonCommunity));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
 
         $physicalPerson = new PhysicalPerson();
@@ -81,6 +92,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::universalCommunity));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -92,6 +105,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::commonCommunity));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
@@ -103,6 +118,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         $parent3 = $physicalPerson;
         
@@ -115,6 +132,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         $parent4 = $physicalPerson;
         
@@ -127,6 +146,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::child));
+        $physicalPerson->setLawPosition($lawPosition);
         $physicalPerson->addParent($parent3);
         $physicalPerson->addParent($parent4);
         $manager->persist($physicalPerson);
@@ -140,6 +161,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         $parent1 = $physicalPerson;
         
@@ -152,6 +175,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
+        $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
         $parent2 = $physicalPerson;
         
@@ -164,6 +189,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::child));
+        $physicalPerson->setLawPosition($lawPosition);
         $physicalPerson->addParent($parent1);
         $physicalPerson->addParent($parent2);
         $manager->persist($physicalPerson);
@@ -177,6 +204,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::child));
+        $physicalPerson->setLawPosition($lawPosition);
         $physicalPerson->addParent($parent1);
         $physicalPerson->addParent($parent2);
         $manager->persist($physicalPerson);
@@ -190,6 +219,8 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $physicalPerson->setUser($user);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::child));
+        $physicalPerson->setLawPosition($lawPosition);
         $physicalPerson->addParent($parent1);
         $physicalPerson->addParent($parent2);
         $manager->persist($physicalPerson);

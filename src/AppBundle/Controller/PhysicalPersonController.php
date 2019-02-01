@@ -12,6 +12,7 @@ use AppBundle\Entity\PhysicalPerson;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use AppBundle\Entity\FamilyPosition;
+use AppBundle\Entity\LawPosition;
 
 
 class PhysicalPersonController extends Controller
@@ -37,6 +38,7 @@ class PhysicalPersonController extends Controller
                     'first_name'      => $physicalPerson->getFirstName(),
                     'name'            => $physicalPerson->getName(),
                     'family_position' => $physicalPerson->getFamilyPosition()->getName(),
+                    'law_position'    => $physicalPerson->getLawPosition()->getIdentifier(),
                     'cradle'          => $physicalPerson->isCradle(),
                     'birth_date'      => $physicalPerson->getBirthDate()->format('Y/m/d'),
                     'parents'         => $physicalPerson->getParentIds(),
@@ -65,6 +67,7 @@ class PhysicalPersonController extends Controller
      * @Rest\RequestParam(name="birthDate")
      * @Rest\RequestParam(name="familyPositionId")
      * @Rest\RequestParam(name="parentIds")
+     * @Rest\RequestParam(name="lawPositionId")
      *
      * @Rest\Post("/api/new-person")
      */
@@ -79,6 +82,7 @@ class PhysicalPersonController extends Controller
         $birthDate        = $paramFetcher->get('birthDate');
         $familyPositionId = $paramFetcher->get('familyPositionId');
         $parentIds        = $paramFetcher->get('parentIds');
+        $lawPositionId    = $paramFetcher->get('lawPositionId');
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName($firstName);
@@ -89,6 +93,8 @@ class PhysicalPersonController extends Controller
         $physicalPerson->setUser($user);
         $familyPosition = $em->getRepository(FamilyPosition::class)->find($familyPositionId);
         $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $em->getRepository(LawPosition::class)->find($lawPositionId);
+        $physicalPerson->setLawPosition($lawPosition);
         foreach ($parentIds as $parentId) {
             $parent = $em->getRepository(PhysicalPerson::class)->find($parentId);
             $physicalPerson->addParent($parent);

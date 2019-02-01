@@ -36,6 +36,12 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
+     * @ORM\ManyToOne(targetEntity="lawPosition", inversedBy="physicalPersons")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPosition;
+    
+    /**
      * @ORM\ManyToMany(targetEntity="PhysicalPerson", inversedBy="physicalPerson")
      * @ORM\JoinColumn(nullable=true, onDelete="cascade")
      */
@@ -315,5 +321,29 @@ class PhysicalPerson
         }
         
         return $parentIds; 
+    }
+
+    /**
+     * Set lawPosition.
+     *
+     * @param \AppBundle\Entity\lawPosition|null $lawPosition
+     *
+     * @return PhysicalPerson
+     */
+    public function setLawPosition(\AppBundle\Entity\lawPosition $lawPosition = null)
+    {
+        $this->lawPosition = $lawPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPosition.
+     *
+     * @return \AppBundle\Entity\lawPosition|null
+     */
+    public function getLawPosition()
+    {
+        return $this->lawPosition;
     }
 }
