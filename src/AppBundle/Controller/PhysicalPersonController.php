@@ -93,6 +93,10 @@ class PhysicalPersonController extends Controller
         $physicalPerson->setUser($user);
         $familyPosition = $em->getRepository(FamilyPosition::class)->find($familyPositionId);
         $physicalPerson->setFamilyPosition($familyPosition);
+        if ($lawPositionId = "") {
+            $lawPosition = $em->getRepository(LawPosition::class)->findOneBy(['identifier' => $familyPosition->getIdentifier()]);
+            $lawPositionId = $lawPosition->getId();
+        }
         $lawPosition = $em->getRepository(LawPosition::class)->find($lawPositionId);
         $physicalPerson->setLawPosition($lawPosition);
         foreach ($parentIds as $parentId) {
