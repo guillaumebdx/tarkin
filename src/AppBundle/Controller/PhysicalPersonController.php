@@ -68,6 +68,7 @@ class PhysicalPersonController extends Controller
      * @Rest\RequestParam(name="familyPositionId")
      * @Rest\RequestParam(name="parentIds")
      * @Rest\RequestParam(name="lawPositionId")
+     * @Rest\RequestParam(name="positionIdentifier")
      *
      * @Rest\Post("/api/new-person")
      */
@@ -83,6 +84,7 @@ class PhysicalPersonController extends Controller
         $familyPositionId = $paramFetcher->get('familyPositionId');
         $parentIds        = $paramFetcher->get('parentIds');
         $lawPositionId    = $paramFetcher->get('lawPositionId');
+        $positionIdentifier = $paramFetcher->get('positionIdentifier');
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName($firstName);
@@ -93,11 +95,11 @@ class PhysicalPersonController extends Controller
         $physicalPerson->setUser($user);
         $familyPosition = $em->getRepository(FamilyPosition::class)->find($familyPositionId);
         $physicalPerson->setFamilyPosition($familyPosition);
-        if ($lawPositionId = "") {
-            $lawPosition = $em->getRepository(LawPosition::class)->findOneBy(['identifier' => $familyPosition->getIdentifier()]);
-            $lawPositionId = $lawPosition->getId();
+        if ($lawPositionId === "") {
+            $lawPosition = $em->getRepository(LawPosition::class)->findOneBy(['identifier' => $positionIdentifier]);
+        } else {
+            $lawPosition = $em->getRepository(LawPosition::class)->find($lawPositionId);
         }
-        $lawPosition = $em->getRepository(LawPosition::class)->find($lawPositionId);
         $physicalPerson->setLawPosition($lawPosition);
         foreach ($parentIds as $parentId) {
             $parent = $em->getRepository(PhysicalPerson::class)->find($parentId);
