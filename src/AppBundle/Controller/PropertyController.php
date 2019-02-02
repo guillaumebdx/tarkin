@@ -36,7 +36,7 @@ class PropertyController extends Controller
             foreach ($propertiesCollection as $property) {
                 $acquirement = null;
                 if (null !== $property->getAcquirementTypes()) {
-                    $acquirement = $property->getAcquirementTypes()->getName(),
+                    $acquirement = $property->getAcquirementTypes()->getName();
                 }
                 $properties[] = [
                     'id'                     => $property->getId(),
