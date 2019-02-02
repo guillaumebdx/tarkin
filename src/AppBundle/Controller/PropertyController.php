@@ -244,12 +244,14 @@ class PropertyController extends Controller
             $property->setAcquirementTypes($acquirementType);
         }
         $property->setAcquirementDate(new \DateTime($acquirementDate));
-        
-         $property->setShareWith($property2);
-         $property2->setShareWith($property);
+        if (isset($property2)) {
+            $property->setShareWith($property2);
+            $property2->setShareWith($property);
+            $em->persist($property2);
+        }
+
          $em->persist($property);
-         $em->persist($property2);
-         
+        
          $em->flush();
      
         
