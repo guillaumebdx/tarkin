@@ -14,6 +14,8 @@ use FOS\RestBundle\Request\ParamFetcherInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\PropertyType;
 use AppBundle\Entity\AcquirementType;
+use AppBundle\Entity\LawPosition;
+use AppBundle\Entity\FamilyPosition;
 
 
 class PropertyController extends Controller
@@ -81,6 +83,10 @@ class PropertyController extends Controller
                         $acquirement           = $property->getAcquirementTypes()->getName();
                         $acquirementIdentifier = $property->getAcquirementTypes()->getIdentifier();
                     }
+                    $shareWith = null;
+                    if ($property->isShared() === true) {
+                        $shareWith = $property->getShareWith()->getId();
+                    }
                     $properties[] = [
                         'id'                      => $property->getId(),
                         'name'                    => $property->getName(),
@@ -93,6 +99,8 @@ class PropertyController extends Controller
                         'physicalPersonId'        => $physicalPerson->getId(),
                         'physicalPersonFirstName' => $physicalPerson->getFirstName(),
                         'isFinancial'             => $property->getPropertyTypes()->getFinancial(),
+                        'isShared'                => $property->isShared(),
+                        'shareWith'               => $shareWith,
                     ];
                 }
             }
@@ -202,21 +210,46 @@ class PropertyController extends Controller
         $acquirementTypeId = $paramFetcher->get('acquirementTypeId');
         $acquirementDate   = $paramFetcher->get('acquirementDate');
         
+        $person       = $em->getRepository(PhysicalPerson::class)->find($personId);
+        $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
+        if ($acquirementTypeId) {
+            $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
+            if($person->getLawPosition() === LawPosition::commonCommunity && $acquirementType->getIdentifier() === AcquirementType::duringMarriage) {
+                $value = $value /2;
+                $property2 = new Property();
+                $property2->setName($name);
+                $property2->setValue($value);
+                $property2->setReturnRate($returnRate);
+                foreach ($person->getParents() as $parent) {
+                    if($parent->getFamilyPosition()->getIdentifier() === FamilyPosition::conjoint) {
+                        $spouse = $parent;
+                    }
+                }
+                $property2->addPhysicalPerson($spouse);
+                $property2->setPropertyTypes($propertyType);
+                $property2->setAcquirementTypes($acquirementType);
+                $property2->setAcquirementDate(new \DateTime($acquirementDate));
+            }
+        }
+        
         $property = new Property();
         $property->setName($name);
         $property->setValue($value);
         $property->setReturnRate($returnRate);
-        $person = $em->getRepository(PhysicalPerson::class)->find($personId);
+        
         $property->addPhysicalPerson($person);
-        $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
+        
         $property->setPropertyTypes($propertyType);
         if ($acquirementTypeId) {
-            $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
             $property->setAcquirementTypes($acquirementType);
         }
         $property->setAcquirementDate(new \DateTime($acquirementDate));
-
+        
+         $property->setShareWith($property2);
+         $property2->setShareWith($property);
          $em->persist($property);
+         $em->persist($property2);
+         
          $em->flush();
      
         

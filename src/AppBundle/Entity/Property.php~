@@ -14,6 +14,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Property
 {
 
+    /**
+     * @ORM\ManyToMany(targetEntity="PhysicalPerson", inversedBy="properties")
+     * @ORM\JoinTable(name="physical_person_property")
+     * 
+     */
+    
+    private $physicalPersons;
 
     /**
      * @ORM\ManyToOne(targetEntity="PropertyType", inversedBy="propertyTypes")
@@ -23,7 +30,7 @@ class Property
 
     /**
      * @ORM\ManyToOne(targetEntity="AcquirementType", inversedBy="acquirementTypes")
-     * @ORM\JoinColumn(name="acquirement_type_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="acquirement_type_id", referencedColumnName="id", nullable=true)
      */
     private $acquirementTypes;
 
@@ -64,8 +71,35 @@ class Property
      * @ORM\Column(name="acquirement_date", type="datetime", nullable=true)
      */
     private $acquirementDate;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Property", inversedBy="shareWith")
+     * @ORM\JoinColumn(name="property_id", referencedColumnName="id", nullable=true)
+     */
+    private $shareWith;
 
-
+    public function __construct() 
+    {
+        $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function addPhysicalPerson(PhysicalPerson $physicalPerson)
+    {
+        $this->physicalPersons[] = $physicalPerson;
+        return $this;
+    }
+    
+    public function removePhysicalPerson(PhysicalPerson $physicalPerson)
+    {
+        $this->physicalPersons->removeElement($physicalPerson);
+    }
+    
+    public function getPhysicalPersons()
+    
+    {
+        return $this->physicalPersons;
+    }
+    
     /**
      * Get id.
      *

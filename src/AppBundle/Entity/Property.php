@@ -71,6 +71,12 @@ class Property
      * @ORM\Column(name="acquirement_date", type="datetime", nullable=true)
      */
     private $acquirementDate;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Property", inversedBy="shareWith")
+     * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     */
+    private $shareWith;
 
     public function __construct() 
     {
@@ -249,4 +255,42 @@ class Property
     }
 
 
+
+    /**
+     * Set shareWith.
+     *
+     * @param \AppBundle\Entity\Property|null $shareWith
+     *
+     * @return Property
+     */
+    public function setShareWith(\AppBundle\Entity\Property $shareWith = null)
+    {
+        $this->shareWith = $shareWith;
+
+        return $this;
+    }
+
+    /**
+     * Get shareWith.
+     *
+     * @return \AppBundle\Entity\Property|null
+     */
+    public function getShareWith()
+    {
+        return $this->shareWith;
+    }
+
+    /**
+     * Is Shared
+     * 
+     * @return boolean
+     */
+    public function isShared()
+    {
+        $result = true;
+        if(null === $this->getShareWith()) {
+            $result = false;
+        }
+        return $result;
+    }
 }
