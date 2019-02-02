@@ -101,6 +101,7 @@ class PhysicalPersonController extends Controller
             $lawPosition = $em->getRepository(LawPosition::class)->find($lawPositionId);
         }
         $physicalPerson->setLawPosition($lawPosition);
+        $parentIds = json_decode($parentIds);
         foreach ($parentIds as $parentId) {
             $parent = $em->getRepository(PhysicalPerson::class)->find($parentId);
             $physicalPerson->addParent($parent);
