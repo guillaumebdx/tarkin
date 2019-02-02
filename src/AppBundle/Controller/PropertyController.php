@@ -212,9 +212,11 @@ class PropertyController extends Controller
         
         $person       = $em->getRepository(PhysicalPerson::class)->find($personId);
         $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
+
+        
         if ($acquirementTypeId) {
             $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
-            if($person->getLawPosition() === LawPosition::commonCommunity && $acquirementType->getIdentifier() === AcquirementType::duringMarriage) {
+            if($person->getLawPosition()->getIdentifier() === LawPosition::commonCommunity && $acquirementType->getIdentifier() === AcquirementType::duringMarriage) {
                 $value = $value /2;
                 $property2 = new Property();
                 $property2->setName($name);
