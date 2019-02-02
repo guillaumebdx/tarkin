@@ -75,6 +75,10 @@ class PropertyController extends Controller
             foreach ($user->getPhysicalPersons() as $physicalPerson) {
                 $propertiesCollection = $em->getRepository(Property::class)->findByPhysicalPerson($physicalPerson);
                 foreach ($propertiesCollection as $property) {
+                    $acquirement = null;
+                    if (null !== $property->getAcquirementTypes()) {
+                        $acquirement = $property->getAcquirementTypes()->getName();
+                    }
                     $properties[] = [
                         'id'                      => $property->getId(),
                         'name'                    => $property->getName(),
@@ -83,7 +87,7 @@ class PropertyController extends Controller
                         'identifier_type'         => $property->getPropertyTypes()->getIdentifier(),
                         'type'                    => $property->getPropertyTypes()->getName(),
                         'acquirement_identifier'  => $property->getAcquirementTypes()->getIdentifier(),
-                        'acquirement'             => $property->getAcquirementTypes()->getName(),
+                        'acquirement'             => $acquirement,
                         'physicalPersonId'        => $physicalPerson->getId(),
                         'physicalPersonFirstName' => $physicalPerson->getFirstName(),
                         'isFinancial'             => $property->getPropertyTypes()->getFinancial(),
