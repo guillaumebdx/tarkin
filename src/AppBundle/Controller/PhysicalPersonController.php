@@ -68,7 +68,7 @@ class PhysicalPersonController extends Controller
      * @Rest\RequestParam(name="familyPositionId")
      * @Rest\RequestParam(name="parentIds")
      * @Rest\RequestParam(name="lawPositionId")
-     * @Rest\RequestParam(name="positionIdentifier")
+     * @Rest\RequestParam(name="positionIdentifier",nullable=true)
      *
      * @Rest\Post("/api/new-person")
      */
