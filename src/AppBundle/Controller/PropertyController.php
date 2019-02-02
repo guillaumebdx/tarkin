@@ -176,7 +176,7 @@ class PropertyController extends Controller
      * @Rest\RequestParam(name="value")
      * @Rest\RequestParam(name="returnRate")
      * @Rest\RequestParam(name="propertyTypeId")
-     * @Rest\RequestParam(name="acquirementTypeId")
+     * @Rest\RequestParam(name="acquirementTypeId", nullable=true)
      * @Rest\RequestParam(name="acquirementDate")
      * 
      * @Rest\Post("/api/new-property")
@@ -200,8 +200,10 @@ class PropertyController extends Controller
         $property->addPhysicalPerson($person);
         $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
         $property->setPropertyTypes($propertyType);
-        $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
-        $property->setAcquirementTypes($acquirementType);
+        if ($acquirementTypeId) {
+            $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
+            $property->setAcquirementTypes($acquirementType);
+        }
         $property->setAcquirementDate(new \DateTime($acquirementDate));
 
          $em->persist($property);

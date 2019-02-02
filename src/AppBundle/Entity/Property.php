@@ -30,7 +30,7 @@ class Property
 
     /**
      * @ORM\ManyToOne(targetEntity="AcquirementType", inversedBy="acquirementTypes")
-     * @ORM\JoinColumn(name="acquirement_type_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="acquirement_type_id", referencedColumnName="id", nullable=true)
      */
     private $acquirementTypes;
 
