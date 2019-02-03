@@ -222,10 +222,13 @@ class PropertyController extends Controller
                 $property2->setName($name);
                 $property2->setValue($value);
                 $property2->setReturnRate($returnRate);
-                foreach ($person->getParents() as $parent) {
-                    if($parent->getFamilyPosition()->getIdentifier() === FamilyPosition::conjoint) {
-                        $spouse = $parent;
+                $personCollections = $em->getRepository(PhysicalPerson::class)->findBy(['user' => $person->getUser()->getId()]);
+
+                foreach($personCollections as $personIterate) {
+                    if ($personIterate->getCradle() !== $person->getCradle() && $personIterate->getFamilyPosition()->getIdentifier() === FamilyPosition::conjoint) {
+                        $spouse = $personIterate;
                     }
+
                 }
                 $property2->addPhysicalPerson($spouse);
                 $property2->setPropertyTypes($propertyType);
