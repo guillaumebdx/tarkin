@@ -77,6 +77,14 @@ class Property
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
     private $shareWith;
+    
+    /**
+     * @var int
+     * 
+     * @ORM\Column(name="feeling", type="integer", nullable=true)
+     * 
+     */
+    private $feeling;
 
     public function __construct() 
     {
@@ -292,5 +300,29 @@ class Property
             $result = false;
         }
         return $result;
+    }
+
+    /**
+     * Set feeling.
+     *
+     * @param int|null $feeling
+     *
+     * @return Property
+     */
+    public function setFeeling($feeling = null)
+    {
+        $this->feeling = $feeling;
+
+        return $this;
+    }
+
+    /**
+     * Get feeling.
+     *
+     * @return int|null
+     */
+    public function getFeeling()
+    {
+        return $this->feeling;
     }
 }

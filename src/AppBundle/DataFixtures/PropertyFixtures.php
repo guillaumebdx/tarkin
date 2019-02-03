@@ -28,6 +28,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
         $property->addPhysicalPerson($physicalPersons[0]);
         $property->setPropertyTypes($propertyType);
+        $property->setFeeling(2);
         
         $manager->persist($property);
 
@@ -43,6 +44,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $property->addPhysicalPerson($physicalPersons[0]);
         
         $property->setPropertyTypes($propertyType);
+        $property->setFeeling(5);
         $manager->persist($property);
         
         $property = new Property();
@@ -57,6 +59,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
         $property->addPhysicalPerson($physicalPersons[0]);
         $property->addPhysicalPerson($physicalPersons[1]);
+        $property->setFeeling(8);
         $manager->persist($property);
         
         $property = new Property();
@@ -71,6 +74,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $physicalPersons = $manager->getRepository(PhysicalPerson::class)->findAll();
         $property->addPhysicalPerson($physicalPersons[0]);
         $property->addPhysicalPerson($physicalPersons[1]);
+        $property->setFeeling(7);
         $manager->persist($property);
 
         $manager->flush();
