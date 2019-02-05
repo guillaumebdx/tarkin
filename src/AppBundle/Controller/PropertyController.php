@@ -50,6 +50,7 @@ class PropertyController extends Controller
                     'acquirement_identifier' => $property->getAcquirementTypes()->getIdentifier(),
                     'acquirement'            => $acquirement,
                     'financial'              => $property->getPropertyTypes()->getFinancial(),
+                    'feelingValue'           => $property->getFeeling(),
                 ];
             }
                        
@@ -101,6 +102,7 @@ class PropertyController extends Controller
                         'isFinancial'             => $property->getPropertyTypes()->getFinancial(),
                         'isShared'                => $property->isShared(),
                         'shareWith'               => $shareWith,
+                        'feelingValue'            => $property->getFeeling(),
                     ];
                 }
             }
@@ -196,6 +198,7 @@ class PropertyController extends Controller
      * @Rest\RequestParam(name="propertyTypeId")
      * @Rest\RequestParam(name="acquirementTypeId", nullable=true)
      * @Rest\RequestParam(name="acquirementDate")
+     * @Rest\RequestParam(name="feelingValue")
      * 
      * @Rest\Post("/api/new-property")
      */
@@ -209,6 +212,7 @@ class PropertyController extends Controller
         $propertyTypeId    = $paramFetcher->get('propertyTypeId');
         $acquirementTypeId = $paramFetcher->get('acquirementTypeId');
         $acquirementDate   = $paramFetcher->get('acquirementDate');
+        $feelingValue      = $paramFetcher->get('feelingValue');
         
         $person       = $em->getRepository(PhysicalPerson::class)->find($personId);
         $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
@@ -234,6 +238,7 @@ class PropertyController extends Controller
                 $property2->setPropertyTypes($propertyType);
                 $property2->setAcquirementTypes($acquirementType);
                 $property2->setAcquirementDate(new \DateTime($acquirementDate));
+                $property2->setFeeling($feelingValue);
             }
         }
         
@@ -249,6 +254,7 @@ class PropertyController extends Controller
             $property->setAcquirementTypes($acquirementType);
         }
         $property->setAcquirementDate(new \DateTime($acquirementDate));
+        $property->setFeeling($feelingValue);
         if (isset($property2)) {
             $property->setShareWith($property2);
             $property2->setShareWith($property);
