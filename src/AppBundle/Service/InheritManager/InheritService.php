@@ -45,17 +45,19 @@ class InheritService
 
     /**
      * Get Heirs
-     * 
+     * @return array
      */
     public function getHeirs()
     {
+        $result = [];
         if($this->hasChildren()) {
             if($this->isMarried()) {
-                $this->_handleMarriedWitchChildren();
+                $result = $this->_handleMarriedWitchChildren();
             } else {
-                $this->_handleSingleWitchChildren();
+                $result = $this->_handleSingleWitchChildren();
             }
         }
+        return $result;
     }
 
     
