@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\LawPosition;
 use Doctrine\Common\Collections\Collection;
+use AppBundle\Service\InheritManager\InheritService;
 
 class InheritController extends Controller
 {
@@ -23,70 +24,16 @@ class InheritController extends Controller
      * @Rest\View()
      * @Rest\Get("/api/inherits/user/{userId}")
      */
-    public function getInheritAction(Request $request)
+    public function getInheritAction(Request $request, InheritService $inheritService)
     {
-        $em                        = $this->getDoctrine()->getManager();
-        $user                      = $em->getRepository(User::class)->find($request->get('userId'));
-        $physicalPersonsCollection = $em->getRepository(PhysicalPerson::class)->findBy(['user' => $user]);
-        $usufructSpouse            = null;
-        $childrenCollection        = [];
-        
-        
-        foreach ($physicalPersonsCollection as $physicalPerson) {
-            if($this->_isUsufructSpouse($physicalPerson)) {
-                $usufructSpouse = $physicalPerson;
-            }
-            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::child) {
-                $childrenCollection[] = $physicalPerson;
-            }
-        }
-        $nbChildren = count($childrenCollection);
-        if ($nbChildren === 0) {
-            $this->_retrieveOtherHeirs($physicalPersonsCollection);
-        }
-
-        $response = new JsonResponse();
+        $em              = $this->getDoctrine()->getManager();
+        $user            = $em->getRepository(User::class)->find($request->get('userId'));
+        $inheritService->setUser($user);
+        $inheritService->getHeirs();
+        $response = new JsonResponse('ok');
         $response->headers->set('Access-Control-Allow-Origin', '*');
         
         return $response;
-    }
-
-    /**
-     * Is Usufruct Spouse
-     * 
-     * Determinate if a physical person is able to inherit full usufruct
-     * 
-     * @param PhysicalPerson $physicalPerson
-     * @return boolean
-     */
-    protected function _isUsufructSpouse(PhysicalPerson $physicalPerson)
-    {
-        $result = false;
-        if(
-            $physicalPerson->getLawPosition()->getIdentifier()    === LawPosition::commonCommunity
-            || $physicalPerson->getLawPosition()->getIdentifier() === LawPosition::movableCommunity
-            || $physicalPerson->getLawPosition()->getIdentifier() === LawPosition::separatedProperty
-            ) {
-                $result = true;
-            }
-        return $result;
-    }
-
-    /**
-     * 
-     * @param Array $physicalPersonsCollection
-     * @return array
-     */
-    protected function _retrieveOtherHeirs(Array $physicalPersonsCollection)
-    {
-        $byLawPositionPhysicalPersons = [];
-        $spouse                       = null;
-        $result                       = [];
-        foreach ($physicalPersonsCollection as $physicalPerson) {
-            $byLawPositionPhysicalPersons[$physicalPerson->getLawPosition()->getIdentifier()] = $physicalPerson;
-        }
-
-        return $result;
     }
 
 
