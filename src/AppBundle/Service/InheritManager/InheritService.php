@@ -4,10 +4,13 @@
 namespace AppBundle\Service\InheritManager;
 
 use AppBundle\Entity\PhysicalPerson;
+use AppBundle\Entity\Property;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Entity\LawPosition;
+use AppBundle\Entity\PropertyType;
+use AppBundle\Entity\LiquidationFiscality;
 
 class InheritService
 
@@ -52,25 +55,92 @@ class InheritService
         $result = [];
         if($this->hasChildren()) {
             if($this->isMarried()) {
-                $result = $this->_handleMarriedWitchChildren();
+                $result = $this->_handleMarriedWithChildren();
             } else {
-                $result = $this->_handleSingleWitchChildren();
+                $result = $this->_handleSingleWithChildren();
             }
+        } elseif ($this->isMarried()) {
+            $result = $this->_handleMarriedWithoutChildren();
+        } else {
+            $result = $this->_handleSingleWithoutChildren();
         }
         return $result;
     }
 
     
-    private function _handleMarriedWitchChildren()
+    private function _handleMarriedWithChildren()
     {
-
+        
     }
 
-    private function _handleSingleWitchChildren()
+    private function _handleSingleWithChildren()
     {
-
+        $result     = [];
+        $cradle     = $this->getCradle();
+        $properties = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $sumCradle  = $this->getPropertiesSum($properties);
+        $children   = $this->getChildren();
+        $nbChildren = count($children);
+        foreach ($children as $child) {
+            $result['heirs'][] = [
+                'id'          => $child->getId(),
+                'name'        => $child->getName(),
+                'firstName'   => $child->getFirstName(),
+                'amount'      => $sumCradle / $nbChildren,
+                'bearing'     => 'bearing',
+                'inheritRate' => 'inheritRate',
+                'inheritSum'  => 'inheritSum', 
+            ];
+        }
+        $result['transferableQuota'] = 'transferableQuota';
+        return $result;
+        
     }
 
+    private function _handleMarriedWithoutChildren()
+    {
+        $cradle     = $this->getCradle();
+        $properties = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $sumCradle  = $this->getPropertiesSum($properties);
+    }
+
+    private function _handleSingleWithoutChildren()
+    {
+        $cradle     = $this->getCradle();
+        $properties = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $sumCradle  = $this->getPropertiesSum($properties);
+    }
+
+    /**
+     * get Children
+     * 
+     * @return array
+     */
+    public function getChildren()
+    {
+        $children = [];
+        foreach ($this->physicalPersons as $physicalPerson) {
+            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::child) {
+                $children[] = $physicalPerson;
+            }
+        }
+        return $children;
+    }
+    /**
+     * 
+     * @param array $properties
+     * @return number
+     */
+    public function getPropertiesSum(array $properties)
+    {
+        $sum = 0;
+        foreach ($properties as $property) {
+            if ($property->getPropertyTypes()->getLiquidationFiscality()->getIdentifier() === LiquidationFiscality::inherit) {
+                $sum += $property->getValue();
+            }
+        }
+        return $sum;
+    }
     /**
      * Has Children
      * 
@@ -104,7 +174,22 @@ class InheritService
         }
         return false;
     }
-    
+
+    /**
+     * Get Cradle
+     *
+     * @return string|PhysicalPerson
+     */
+    public function getCradle()
+    {
+        $result = '';
+        foreach ($this->physicalPersons as $physicalPerson) {
+            if ($physicalPerson->isCradle()) {
+                $result = $physicalPerson;
+            }
+        }
+        return $result;
+    }
 
     /**
      * Set Physical Persons

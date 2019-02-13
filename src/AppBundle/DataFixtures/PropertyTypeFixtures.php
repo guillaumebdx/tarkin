@@ -24,6 +24,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::aSaving);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         
@@ -33,6 +35,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::bSaving);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -41,6 +45,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::pel);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -49,6 +55,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::pea);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::pea));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -57,6 +65,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::sharesAccount);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -65,6 +75,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::lifeInsurance);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::lifeInsurance));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::lifeInsurance));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -73,6 +85,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::perco);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -81,6 +95,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::pee);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -89,6 +105,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::fcpi);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::financial));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -97,6 +115,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier('scpi');
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::realEstate));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -105,6 +125,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::principalResidence);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::realEstate));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         $propertyType = new PropertyType();
@@ -113,6 +135,8 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         $propertyType->setIdentifier(PropertyType::rentalProperty);
         $saleFiscality = $manager->getRepository(SaleFiscality::class)->findOneBy(array('identifier' => SaleFiscality::realEstate));
         $propertyType->setSaleFiscality($saleFiscality);
+        $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::inherit));
+        $propertyType->setLiquidationFiscality($liquidationFiscality);
         $manager->persist($propertyType);
         
         
@@ -123,6 +147,7 @@ class PropertyTypeFixtures extends Fixture implements DependentFixtureInterface
         return array(
             SaleFiscalityFixtures::class,
             InterestFiscalityFixtures::class,
+            LiquidationFiscalityFixtures::class,
         );
     }
 

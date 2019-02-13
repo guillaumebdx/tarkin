@@ -29,8 +29,7 @@ class InheritController extends Controller
         $em              = $this->getDoctrine()->getManager();
         $user            = $em->getRepository(User::class)->find($request->get('userId'));
         $inheritService->setUser($user);
-        $inheritService->getHeirs();
-        $response = new JsonResponse('ok');
+        $response = new JsonResponse($inheritService->getHeirs());
         $response->headers->set('Access-Control-Allow-Origin', '*');
         
         return $response;
