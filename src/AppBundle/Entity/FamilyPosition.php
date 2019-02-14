@@ -19,6 +19,7 @@ class FamilyPosition
     const parent      = 'parent';
     const child       = 'child';
     const uncleAunt   = 'uncle-aunt';
+    const nephew      = 'nephew';
     const greatParent = 'great-parent';
     const greatChild  = 'great-child';
     const upToFourthDegree   = 'up-to-fourth-degree';

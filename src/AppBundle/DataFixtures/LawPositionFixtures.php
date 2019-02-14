@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\FamilyPosition;
 use AppBundle\Entity\LawPosition;
+use AppBundle\Entity\Allowance;
 
 
 class LawPositionFixtures extends Fixture implements DependentFixtureInterface
@@ -75,6 +76,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition->setName('Concubinage');
         $lawPosition->setIdentifier(LawPosition::cohabitPartner);
         $lawPosition->setSpouse(true);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'fourth'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::conjoint));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -82,6 +85,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::sibling);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'second'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::sibling));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -89,6 +94,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::parent);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'first'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::parent));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -96,6 +103,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::child);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'first'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::child));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -103,13 +112,26 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::uncleAunt);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'fourth'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::uncleAunt));
+        $lawPosition->setFamilyPosition($familyPosition);
+        $manager->persist($lawPosition);
+        
+        $lawPosition = new LawPosition();
+        $lawPosition->setIdentifier(LawPosition::nephew);
+        $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'third'));
+        $lawPosition->setAllowances($allowance);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::nephew));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
 
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::greatParent);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'fourth'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::greatParent));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -117,6 +139,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::greatChild);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'first'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::greatChild));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -124,6 +148,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::upToFourthDegree);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'third'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::upToFourthDegree));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -131,6 +157,8 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
         $lawPosition = new LawPosition();
         $lawPosition->setIdentifier(LawPosition::beyondFourthDegree);
         $lawPosition->setSpouse(false);
+        $allowance = $manager->getRepository(Allowance::class)->findOneBy(array('identifier' => 'fourth'));
+        $lawPosition->setAllowances($allowance);
         $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::beyondFourthDegree));
         $lawPosition->setFamilyPosition($familyPosition);
         $manager->persist($lawPosition);
@@ -143,6 +171,7 @@ class LawPositionFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
           FamilyPositionFixtures::class,  
+          AllowanceFixtures::class,
         );
     }
 

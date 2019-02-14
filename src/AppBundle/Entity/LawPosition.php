@@ -26,6 +26,7 @@ class LawPosition
     const parent             = 'parent';
     const child              = 'child';
     const uncleAunt          = 'uncle-aunt';
+    const nephew             = 'nephew';
     const greatParent        = 'great-parent';
     const greatChild         = 'great-child';
     const upToFourthDegree   = 'up-to-fourth-degree';
@@ -68,6 +69,11 @@ class LawPosition
      */
     private $familyPositions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Allowance", inversedBy="lawPosition")
+     * @ORM\JoinColumn(name="allowance_id", referencedColumnName="id")
+     */
+    private $allowances;
 
     /**
      * Class constructor
@@ -172,5 +178,89 @@ class LawPosition
     public function getFamilyPosition()
     {
         return $this->familyPositions;
+    }
+
+    /**
+     * Get spouse.
+     *
+     * @return bool
+     */
+    public function getSpouse()
+    {
+        return $this->spouse;
+    }
+
+    /**
+     * Set familyPositions.
+     *
+     * @param \AppBundle\Entity\FamilyPosition|null $familyPositions
+     *
+     * @return LawPosition
+     */
+    public function setFamilyPositions(\AppBundle\Entity\FamilyPosition $familyPositions = null)
+    {
+        $this->familyPositions = $familyPositions;
+
+        return $this;
+    }
+
+    /**
+     * Get familyPositions.
+     *
+     * @return \AppBundle\Entity\FamilyPosition|null
+     */
+    public function getFamilyPositions()
+    {
+        return $this->familyPositions;
+    }
+
+
+
+    /**
+     * Set allowance.
+     *
+     * @param \AppBundle\Entity\Allowance|null $allowance
+     *
+     * @return LawPosition
+     */
+    public function setAllowance(\AppBundle\Entity\Allowance $allowance = null)
+    {
+        $this->allowance = $allowance;
+
+        return $this;
+    }
+
+    /**
+     * Get allowance.
+     *
+     * @return \AppBundle\Entity\Allowance|null
+     */
+    public function getAllowance()
+    {
+        return $this->allowance;
+    }
+
+    /**
+     * Set allowances.
+     *
+     * @param \AppBundle\Entity\Allowance|null $allowances
+     *
+     * @return LawPosition
+     */
+    public function setAllowances(\AppBundle\Entity\Allowance $allowances = null)
+    {
+        $this->allowances = $allowances;
+
+        return $this;
+    }
+
+    /**
+     * Get allowances.
+     *
+     * @return \AppBundle\Entity\Allowance|null
+     */
+    public function getAllowances()
+    {
+        return $this->allowances;
     }
 }

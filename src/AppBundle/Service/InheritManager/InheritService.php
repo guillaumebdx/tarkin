@@ -82,19 +82,34 @@ class InheritService
         $children   = $this->getChildren();
         $nbChildren = count($children);
         foreach ($children as $child) {
+            $allowance   = $child->getLawPosition()->getAllowances()->getValue();
+            $amount      = $sumCradle / $nbChildren;
+            $taxablePart = $this->_retrieveTaxablePart($amount, $allowance);
             $result['heirs'][] = [
-                'id'          => $child->getId(),
-                'name'        => $child->getName(),
-                'firstName'   => $child->getFirstName(),
-                'amount'      => $sumCradle / $nbChildren,
-                'bearing'     => 'bearing',
-                'inheritRate' => 'inheritRate',
-                'inheritSum'  => 'inheritSum', 
+                'id'                       => $child->getId(),
+                'name'                     => $child->getName(),
+                'firstName'                => $child->getFirstName(),
+                'amount'                   => $amount,
+                'familyPosition'           => $child->getFamilyPosition()->getName(),
+                'familyPositionIdentifier' => $child->getFamilyPosition()->getIdentifier(),
+                'allowance'                => $allowance,
+                'taxablePart'              => $taxablePart,
+                'maxInheritRate'           => 'maxInheritRate',
+                'inheritSum'               => 'inheritSum', 
             ];
         }
         $result['transferableQuota'] = 'transferableQuota';
         return $result;
         
+    }
+
+    private function _retrieveTaxablePart($amount, $allowance)
+    {
+        $result = 0;
+        if ($amount > $allowance) {
+            $result = $amount - $allowance;
+        }
+        return $result;
     }
 
     private function _handleMarriedWithoutChildren()

@@ -50,6 +50,11 @@ class FamilyPositionFixtures extends Fixture implements ORMFixtureInterface
         $manager->persist($familyPosition);
         
         $familyPosition = new FamilyPosition();
+        $familyPosition->setName('Neveu / nièce');
+        $familyPosition->setIdentifier(FamilyPosition::nephew);
+        $manager->persist($familyPosition);
+        
+        $familyPosition = new FamilyPosition();
         $familyPosition->setName('Grand-parent');
         $familyPosition->setIdentifier(FamilyPosition::greatParent);
         $manager->persist($familyPosition);

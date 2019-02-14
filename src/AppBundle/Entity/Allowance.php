@@ -1,0 +1,119 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Allowance
+ *
+ * @ORM\Table(name="allowance")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AllowanceRepository")
+ */
+class Allowance
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="value", type="integer")
+     */
+    private $value;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="identifier", type="string")
+     */
+    private $identifier;
+    
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set value.
+     *
+     * @param int $value
+     *
+     * @return Allowance
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value.
+     *
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set lawPosition.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPosition
+     *
+     * @return Allowance
+     */
+    public function setLawPosition(\AppBundle\Entity\LawPosition $lawPosition = null)
+    {
+        $this->lawPosition = $lawPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPosition.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPosition()
+    {
+        return $this->lawPosition;
+    }
+
+    /**
+     * Set identifier.
+     *
+     * @param string $identifier
+     *
+     * @return Allowance
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * Get identifier.
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+}
