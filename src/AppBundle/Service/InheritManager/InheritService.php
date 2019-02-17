@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Entity\LawPosition;
 use AppBundle\Entity\PropertyType;
 use AppBundle\Entity\LiquidationFiscality;
+use AppBundle\Entity\FiscalityAmountBearing;
 
 class InheritService
 
@@ -81,10 +82,13 @@ class InheritService
         $sumCradle  = $this->getPropertiesSum($properties);
         $children   = $this->getChildren();
         $nbChildren = count($children);
+        $liquidationsFiscalities = $this->em->getRepository(LiquidationFiscality::class)->findBy(['identifier' => LiquidationFiscality::inherit]);
+        $liquidationFiscality = $liquidationsFiscalities[0];
         foreach ($children as $child) {
             $allowance   = $child->getLawPosition()->getAllowances()->getValue();
             $amount      = $sumCradle / $nbChildren;
             $taxablePart = $this->_retrieveTaxablePart($amount, $allowance);
+            $tax         = $this->getInheritSum($taxablePart, $child->getLawPosition(), $liquidationFiscality)['amount'];
             $result['heirs'][] = [
                 'id'                       => $child->getId(),
                 'name'                     => $child->getName(),
@@ -95,7 +99,9 @@ class InheritService
                 'allowance'                => $allowance,
                 'taxablePart'              => $taxablePart,
                 'maxInheritRate'           => 'maxInheritRate',
-                'inheritSum'               => 'inheritSum', 
+                'tax'                      => $tax,
+                'netSum'                   => $amount - $tax,
+                'taxes'                    => $this->getInheritSum($taxablePart, $child->getLawPosition(), $liquidationFiscality)['taxes'],
             ];
         }
         $result['transferableQuota'] = 'transferableQuota';
@@ -103,6 +109,45 @@ class InheritService
         
     }
 
+    /**
+     * 
+     * @param int $taxablePart
+     * @param LawPosition $lawPosition
+     * @return array
+     */
+    public function getInheritSum(int $taxablePart, LawPosition $lawPosition, LiquidationFiscality $liquidationFiscality) 
+    {
+        $scales = $this->em->getRepository(FiscalityAmountBearing::class)->findBy([
+            'lawPositions'         => $lawPosition, 
+            'liquidationFiscality' => $liquidationFiscality,
+        ]);
+        $taxes     = [];
+        $nbScales  = count($scales);
+        for ($i=1; $i < $nbScales; $i++) {
+            $prevRate = $scales[$i -1]->getRate();
+            if ($taxablePart > $scales[$i]->getAmount()) {
+                $taxes[$prevRate] = ($scales[$i]->getAmount() - $scales[$i -1]->getAmount()) * $prevRate / 100;
+                if ($i === $nbScales - 1) {
+                    $taxes[$scales[$i]->getRate()] = ($taxablePart - $scales[$i]->getAmount()) * $scales[$i]->getRate() / 100;
+                }
+            } else if ($taxablePart > $scales[$i -1]->getAmount()) {
+
+                $taxes[$prevRate] = ($taxablePart - $scales[$i -1]->getAmount()) * $scales[$i -1]->getRate() / 100;
+            }
+        }
+
+        return [
+            'taxes'  => $taxes,
+            'amount' => floor(array_sum($taxes)),
+        ];
+    }
+
+    /**
+     * 
+     * @param int $amount
+     * @param int $allowance
+     * @return number
+     */
     private function _retrieveTaxablePart($amount, $allowance)
     {
         $result = 0;

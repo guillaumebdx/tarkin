@@ -48,10 +48,10 @@ class FiscalityAmountBearing
     private $amount;
     
     /**
-     * @ORM\ManyToMany(targetEntity="LiquidationFiscality")
+     * @ORM\ManyToOne(targetEntity="LiquidationFiscality")
      * @ORM\JoinColumn(name="liquidation_fiscality_id", referencedColumnName="id")
      */
-    private $liquidationFiscalities;
+    private $liquidationFiscality;
 
     /**
      * Constructor
@@ -178,5 +178,29 @@ class FiscalityAmountBearing
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    /**
+     * Set liquidationFiscality.
+     *
+     * @param \AppBundle\Entity\LiquidationFiscality|null $liquidationFiscality
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setLiquidationFiscality(\AppBundle\Entity\LiquidationFiscality $liquidationFiscality = null)
+    {
+        $this->liquidationFiscality = $liquidationFiscality;
+
+        return $this;
+    }
+
+    /**
+     * Get liquidationFiscality.
+     *
+     * @return \AppBundle\Entity\LiquidationFiscality|null
+     */
+    public function getLiquidationFiscality()
+    {
+        return $this->liquidationFiscality;
     }
 }

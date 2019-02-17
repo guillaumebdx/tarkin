@@ -18,12 +18,6 @@ class LiquidationFiscality
 
     
     /**
-     * @ORM\ManyToMany(targetEntity="FiscalityAmountBearing")
-     * @ORM\JoinColumn(name="fiscality_amount_bearing_id", referencedColumnName="id")
-     */
-    private $fiscalityAmountBearings;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -106,61 +100,4 @@ class LiquidationFiscality
     }
 
     
-
-    /**
-     * Set fiscalityAmountBearings.
-     *
-     * @param \AppBundle\Entity\FiscalityAmountBearing|null $fiscalityAmountBearings
-     *
-     * @return LiquidationFiscality
-     */
-    public function setFiscalityAmountBearings(\AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearings = null)
-    {
-        $this->fiscalityAmountBearings = $fiscalityAmountBearings;
-
-        return $this;
-    }
-
-    /**
-     * Get fiscalityAmountBearings.
-     *
-     * @return \AppBundle\Entity\FiscalityAmountBearing|null
-     */
-    public function getFiscalityAmountBearings()
-    {
-        return $this->fiscalityAmountBearings;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->fiscalityAmountBearings = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add fiscalityAmountBearing.
-     *
-     * @param \AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing
-     *
-     * @return LiquidationFiscality
-     */
-    public function addFiscalityAmountBearing(\AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing)
-    {
-        $this->fiscalityAmountBearings[] = $fiscalityAmountBearing;
-
-        return $this;
-    }
-
-    /**
-     * Remove fiscalityAmountBearing.
-     *
-     * @param \AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeFiscalityAmountBearing(\AppBundle\Entity\FiscalityAmountBearing $fiscalityAmountBearing)
-    {
-        return $this->fiscalityAmountBearings->removeElement($fiscalityAmountBearing);
-    }
 }

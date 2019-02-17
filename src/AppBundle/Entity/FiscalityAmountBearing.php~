@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class FiscalityAmountBearing
 {
 
+    /**
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="lawPositions")
+     * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
+     */
+    private $lawPositions;
 
     /**
      * @ORM\ManyToOne(targetEntity="FiscalityYearBearing", inversedBy="fiscalityYearBearings")
@@ -38,10 +43,61 @@ class FiscalityAmountBearing
     /**
      * @var int
      *
-     * @ORM\Column(name="amount", type="integer")
+     * @ORM\Column(name="amount", type="integer", nullable=true)
      */
     private $amount;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="LiquidationFiscality")
+     * @ORM\JoinColumn(name="liquidation_fiscality_id", referencedColumnName="id")
+     */
+    private $liquidationFiscality;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->liquidationFiscalities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set lawPositions.
+     *
+     * @param \AppBundle\Entity\LawPosition|null $lawPositions
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setLawPositions(\AppBundle\Entity\LawPosition $lawPositions = null)
+    {
+        $this->lawPositions = $lawPositions;
+        
+        return $this;
+    }
+    
+    /**
+     * Get lawPositions.
+     *
+     * @return \AppBundle\Entity\LawPosition|null
+     */
+    public function getLawPositions()
+    {
+        return $this->lawPositions;
+    }
+    
+    /**
+     * Add liquidationFiscality.
+     *
+     * @param \AppBundle\Entity\LiquidationFiscality $liquidationFiscality
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function addLiquidationFiscality(\AppBundle\Entity\LiquidationFiscality $liquidationFiscality)
+    {
+        $this->liquidationFiscalities[] = $liquidationFiscality;
+        return $this;
+    }
+    
     /**
      * Get id.
      *
@@ -98,5 +154,29 @@ class FiscalityAmountBearing
     public function getFiscalityYearBearings()
     {
         return $this->fiscalityYearBearings;
+    }
+
+    /**
+     * Set amount.
+     *
+     * @param int $amount
+     *
+     * @return FiscalityAmountBearing
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount.
+     *
+     * @return int
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 }
