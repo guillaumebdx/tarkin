@@ -324,6 +324,14 @@ class PhysicalPerson
     }
 
     /**
+     * Get Age
+     * @return number
+     */
+    public function getAge()
+    {
+        return 45;
+    }
+    /**
      * Set lawPosition.
      *
      * @param \AppBundle\Entity\lawPosition|null $lawPosition
