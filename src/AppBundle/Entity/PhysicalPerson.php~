@@ -36,7 +36,7 @@ class PhysicalPerson
     private $familyPosition;
     
     /**
-     * @ORM\ManyToOne(targetEntity="lawPosition", inversedBy="physicalPersons")
+     * @ORM\ManyToOne(targetEntity="LawPosition", inversedBy="physicalPersons")
      * @ORM\JoinColumn(name="law_position_id", referencedColumnName="id")
      */
     private $lawPosition;
@@ -84,6 +84,14 @@ class PhysicalPerson
      * @ORM\Column(name="birth_date", type="datetime", nullable=true)
      */
     private $birthDate;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="alive", type="boolean", nullable=true)
+     */
+    private $alive;
+    
 
     public function __construct()
     {
@@ -321,5 +329,61 @@ class PhysicalPerson
         }
         
         return $parentIds; 
+    }
+
+    /**
+     * Get Age
+     * @return number
+     */
+    public function getAge()
+    {
+        return 45;
+    }
+    /**
+     * Set lawPosition.
+     *
+     * @param \AppBundle\Entity\lawPosition|null $lawPosition
+     *
+     * @return PhysicalPerson
+     */
+    public function setLawPosition(\AppBundle\Entity\lawPosition $lawPosition = null)
+    {
+        $this->lawPosition = $lawPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get lawPosition.
+     *
+     * @return \AppBundle\Entity\lawPosition|null
+     */
+    public function getLawPosition()
+    {
+        return $this->lawPosition;
+    }
+
+    /**
+     * Set alive.
+     *
+     * @param bool $alive
+     *
+     * @return PhysicalPerson
+     */
+    public function setAlive($alive)
+    {
+        $this->alive = $alive;
+
+        return $this;
+    }
+
+    /**
+     * Get alive.
+     *
+     * @return bool
+     */
+    public function getAlive()
+    {
+        return $this->alive;
     }
 }

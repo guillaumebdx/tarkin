@@ -84,6 +84,14 @@ class PhysicalPerson
      * @ORM\Column(name="birth_date", type="datetime", nullable=true)
      */
     private $birthDate;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="alive", type="boolean", nullable=true)
+     */
+    private $alive;
+    
 
     public function __construct()
     {
@@ -353,5 +361,29 @@ class PhysicalPerson
     public function getLawPosition()
     {
         return $this->lawPosition;
+    }
+
+    /**
+     * Set alive.
+     *
+     * @param bool $alive
+     *
+     * @return PhysicalPerson
+     */
+    public function setAlive($alive)
+    {
+        $this->alive = $alive;
+
+        return $this;
+    }
+
+    /**
+     * Get alive.
+     *
+     * @return bool
+     */
+    public function getAlive()
+    {
+        return $this->alive;
     }
 }
