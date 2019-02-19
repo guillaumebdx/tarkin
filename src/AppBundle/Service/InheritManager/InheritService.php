@@ -77,9 +77,9 @@ class InheritService
                 $result = $this->_handleSingleWithChildren();
             }
         } elseif ($this->isMarried()) {
-            $result = $this->_handleMarriedWithoutChildren();
+            $result = $this->_handleMarriedWithoutChild();
         } else {
-            $result = $this->_handleSingleWithoutChildren();
+            $result = $this->_handleSingleWithoutChild();
         }
         return $result;
     }
@@ -169,7 +169,7 @@ class InheritService
      * @return array
      * 
      */
-    private function _handleMarriedWithoutChildren()
+    private function _handleMarriedWithoutChild()
     {
         //TODO Ajouter la règle des parents
         // https://droit-finances.commentcamarche.com/contents/1000-succession-heritage-et-heritiers#le-defunt-etait-marie
@@ -251,7 +251,7 @@ class InheritService
         
     }
 
-    private function _handleSingleWithoutChildren()
+    private function _handleSingleWithoutChild()
     {
         $cradle             = $this->getCradle();
         $properties         = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
@@ -295,6 +295,10 @@ class InheritService
         return 'celib sans enfants';
     }
 
+    /**
+     *
+     * @return array
+     */
     public function retrieveParents()
     {
         $result = [];
@@ -306,6 +310,10 @@ class InheritService
         return $result;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function retrieveSiblings()
     {
         $result = [];
@@ -317,6 +325,10 @@ class InheritService
         return $result;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function retrieveNephews()
     {
         $result = [];
@@ -328,6 +340,10 @@ class InheritService
         return $result;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function retrieveUnclesAunts()
     {
         $result = [];
@@ -339,6 +355,10 @@ class InheritService
         return $result;
     }
 
+    /**
+     * 
+     * @return array
+     */
     public function retrieveBeyondFourthDegree()
     {
         $result = [];
