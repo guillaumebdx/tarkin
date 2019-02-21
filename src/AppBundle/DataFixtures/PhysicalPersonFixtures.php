@@ -31,6 +31,48 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $manager->persist($physicalPerson);
         
         $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Roméo');
+        $physicalPerson->setName('CELIB');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST CELIB'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::sibling));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::sibling));
+        $physicalPerson->setLawPosition($lawPosition);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Tony');
+        $physicalPerson->setName('CELIB');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST CELIB'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::sibling));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::sibling));
+        $physicalPerson->setLawPosition($lawPosition);
+        $physicalPerson->setAlive(false);
+        $manager->persist($physicalPerson);
+        $louisParent = $physicalPerson;
+        
+        $physicalPerson = new PhysicalPerson();
+        $physicalPerson->setFirstName('Louis');
+        $physicalPerson->setName('CELIB');
+        $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));
+        $physicalPerson->setCradle(false);
+        $user = $manager->getRepository(User::class)->findOneBy(array('nameReference' => 'TEST CELIB'));
+        $physicalPerson->setUser($user);
+        $familyPosition = $manager->getRepository(FamilyPosition::class)->findOneBy(array('identifier' => FamilyPosition::nephew));
+        $physicalPerson->setFamilyPosition($familyPosition);
+        $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::nephew));
+        $physicalPerson->setLawPosition($lawPosition);
+        $physicalPerson->addParent($louisParent);
+        $manager->persist($physicalPerson);
+        
+        $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Isabelle');
         $physicalPerson->setName('PACS');
         $physicalPerson->setBirthDate(new \DateTime('1981-11-18'));

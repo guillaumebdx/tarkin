@@ -130,18 +130,23 @@ class InheritService
         ]);
         $taxes     = [];
         $nbScales  = count($scales);
-        for ($i=1; $i < $nbScales; $i++) {
-            $prevRate = $scales[$i -1]->getRate();
-            if ($taxablePart > $scales[$i]->getAmount()) {
-                $taxes[$prevRate] = ($scales[$i]->getAmount() - $scales[$i -1]->getAmount()) * $prevRate / 100;
-                if ($i === $nbScales - 1) {
-                    $taxes[$scales[$i]->getRate()] = ($taxablePart - $scales[$i]->getAmount()) * $scales[$i]->getRate() / 100;
+        if ($nbScales === 1) {
+            $taxes[$scales[0]->getRate()] = $taxablePart * $scales[0]->getRate() / 100;
+        } else {
+            for ($i=1; $i < $nbScales; $i++) {
+                $prevRate = $scales[$i -1]->getRate();
+                if ($taxablePart > $scales[$i]->getAmount()) {
+                    $taxes[$prevRate] = ($scales[$i]->getAmount() - $scales[$i -1]->getAmount()) * $prevRate / 100;
+                    if ($i === $nbScales - 1) {
+                        $taxes[$scales[$i]->getRate()] = ($taxablePart - $scales[$i]->getAmount()) * $scales[$i]->getRate() / 100;
+                    }
+                } else if ($taxablePart > $scales[$i -1]->getAmount()) {
+                    
+                    $taxes[$prevRate] = ($taxablePart - $scales[$i -1]->getAmount()) * $scales[$i -1]->getRate() / 100;
                 }
-            } else if ($taxablePart > $scales[$i -1]->getAmount()) {
-
-                $taxes[$prevRate] = ($taxablePart - $scales[$i -1]->getAmount()) * $scales[$i -1]->getRate() / 100;
             }
         }
+        
 
         return [
             'taxes'  => $taxes,
@@ -227,7 +232,7 @@ class InheritService
 
     /**
      *
-     * @return string[]
+     * @return array
      */
     private function _handleSingleWithChildren()
     {
@@ -251,50 +256,222 @@ class InheritService
         
     }
 
+    /**
+     * 
+     * @return array
+     */
     private function _handleSingleWithoutChild()
     {
-        $cradle             = $this->getCradle();
-        $properties         = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
-        $sumCradle          = $this->getPropertiesSum($properties);
-        $parents            = $this->retrieveParents() ;
-        $siblings           = $this->retrieveSiblings();
-        $unclesAunts        = $this->retrieveUnclesAunts();
-        $nephews            = $this->retrieveNephews();
-        $beyondFourthDegree = $this->retrieveBeyondFourthDegree();
-        //TODO A revoir dans le model pour ajouter DC dans physical person afin de traiter les neveux en représentation d'un frere ou soeur décédé
-        //je pourrais ensuite le récupérer avec getParents
-//         if (count($parents === 2)) {
-//             if (count($siblings) > 0) {
-//                 //Le père et la mère reçoivent chacun un quart des biens, l'autre moitié étant partagée entre ses frères et soeurs. 
-//             } else {
-//                 if (count($nephews) > 0){
-//                     //Le père et la mère reçoivent chacun un quart des biens, l'autre moitié étant partagée entre neveux en representation. 
-//                 } else {
-//                     //Le père et la mère reçoivent chacun la moitié des biens. 
-//                 }
-//             }
-//         } elseif (count($parents === 1)){
-//             if (count($siblings > 0)) {
-//                 //Le père ou la mère reçoit un quart des biens, le solde étant partagé entre ses frères et soeurs. 
-//             } else {
-//                 if (count($nephews) > 0) {
-//                     //Le père ou la mère reçoit un quart des biens, le solde étant partagé entre les neveux en représentation.
-//                 } else {
-//                     //Le père ou la mère reçoit la totalité des biens, 
-//                 }
-//             }
-//         } else {
-//             if (count($siblings > 0)) {
-//                 //Le patrimoine est partagé entre ses frères et soeurs. 
-//             } else {
-//                 if (count($nephews)) {
-//                     //les neveux en représentation
-//                 }
-//             }
-//         }
-        return 'celib sans enfants';
+        $cradle                  = $this->getCradle();
+        $properties              = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $sumCradle               = $this->getPropertiesSum($properties);
+        $parents                 = $this->retrieveParents() ;
+        $siblings                = $this->retrieveSiblings();
+        $unclesAunts             = $this->retrieveUnclesAunts();
+        $nephews                 = $this->retrieveNephews();
+        $beyondFourthDegree      = $this->retrieveBeyondFourthDegree();
+        $upToFourthDegree        = $this->retrieveUpToFourthDegree();
+        $deathSiblings           = $this->retrieveDeathSiblings();
+        $greatParents            = $this->retrieveGreatParents();
+        $liquidationsFiscalities = $this->em->getRepository(LiquidationFiscality::class)->findBy(['identifier' => LiquidationFiscality::inherit]);
+        $liquidationFiscality    = $liquidationsFiscalities[0];
+        $result                  = [];
+        if (count($parents) === 2) {
+            if (count($siblings) > 0) {
+                //Le père et la mère reçoivent chacun un quart des biens, l'autre moitié étant partagée entre ses frères et soeurs. 
+                //father and mother receive a quarter each. The other half is shared between siblings
+                foreach ($parents as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle * 0.25;
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+                foreach ($siblings as $heir) {
+                    if ($heir->getAlive() !== false) {
+                        $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                        $amount            = ($sumCradle * 0.5) /count($siblings);
+                        $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                        $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                        $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                    } else {
+                        //TODO REFACTORING por gagner en lisibilité : créer dans l entité méthode getChildren 
+                        $i = 0;
+                        foreach ($nephews as $nephew) {
+                            foreach ($nephew->getParents() as $nephewParent) {
+                                if ($nephewParent === $heir) {
+                                    $i++;
+                                }
+                            }
+                        }
+                        foreach ($nephews as $nephew) {
+                            foreach ($nephew->getParents() as $nephewParent) {
+                                if ($nephewParent === $heir) {
+                                    $allowance         = $nephew->getLawPosition()->getAllowances()->getValue();
+                                    $amount            = ($sumCradle * 0.5) /count($siblings / $i);
+                                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                                    $tax               = $this->getInheritSum($taxablePart, $nephew->getLawPosition(), $liquidationFiscality)['amount'];
+                                    $result['heirs'][] = $this->buildInheritArray($nephew, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                //Le père et la mère reçoivent chacun la moitié des biens.
+                foreach ($parents as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle * 0.5;
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+            }
+        } elseif (count($parents) === 1){
+            if (count($siblings) > 0) {
+                //Le père ou la mère reçoit un quart des biens, le solde étant partagé entre ses frères et soeurs. 
+                foreach ($parents as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle * 0.25;
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+                foreach ($siblings as $heir) {
+                    if ($heir->getAlive() !== false) {
+                        $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                        $amount            = ($sumCradle * 0.75) /count($siblings);
+                        $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                        $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                        $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                    } else {
+                        //TODO REFACTORING por gagner en lisibilité : créer dans l entité méthode getChildren
+                        $i = 0;
+                        foreach ($nephews as $nephew) {
+                            foreach ($nephew->getParents() as $nephewParent) {
+                                if ($nephewParent === $heir) {
+                                    $i++;
+                                }
+                            }
+                        }
+                        foreach ($nephews as $nephew) {
+                            foreach ($nephew->getParents() as $nephewParent) {
+                                if ($nephewParent === $heir) {
+                                    $allowance         = $nephew->getLawPosition()->getAllowances()->getValue();
+                                    $amount            = ($sumCradle * 0.75) /count($siblings / $i);
+                                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                                    $tax               = $this->getInheritSum($taxablePart, $nephew->getLawPosition(), $liquidationFiscality)['amount'];
+                                    $result['heirs'][] = $this->buildInheritArray($nephew, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            } else {
+                //Le père ou la mère reçoit la totalité des biens, 
+                foreach ($parents as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle / 2;
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+            }
+        } else {
+            if (count($siblings) > 0) {
+                //Le patrimoine est partagé entre ses frères et soeurs. 
+                foreach ($siblings as $heir) {
+                    if ($heir->getAlive() !== false) {
+                        $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                        $amount            = $sumCradle /count($siblings);
+                        $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                        $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                        $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                    } else {
+                        //TODO REFACTORING por gagner en lisibilité : créer dans l entité méthode getChildren
+                        $i = 0;
+                        foreach ($nephews as $nephew) {
+                            foreach ($nephew->getParents() as $nephewParent) {
+                                if ($nephewParent === $heir) {
+                                    $i++;
+                                }
+                            }
+                        }
+                        foreach ($nephews as $nephew) {
+                            foreach ($nephew->getParents() as $nephewParent) {
+                                if ($nephewParent === $heir) {
+                                    $allowance         = $nephew->getLawPosition()->getAllowances()->getValue();
+                                    $amount            = $sumCradle /count($siblings) / $i;
+                                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                                    $tax               = $this->getInheritSum($taxablePart, $nephew->getLawPosition(), $liquidationFiscality)['amount'];
+                                    $result['heirs'][] = $this->buildInheritArray($nephew, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                                }
+                            }
+                        }
+                    }
+                }
+            } elseif (count($greatParents) > 0) {
+                foreach ($greatParents as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle / count($greatParents);
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+            } elseif (count($unclesAunts) > 0) {
+                foreach ($unclesAunts as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle / count($unclesAunts);
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+            } elseif (count($beyondFourthDegree) > 0) {
+                foreach ($beyondFourthDegree as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle / count($beyondFourthDegree);
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+            } elseif (count($upToFourthDegree) > 0) {
+                foreach ($upToFourthDegree as $heir) {
+                    $allowance         = $heir->getLawPosition()->getAllowances()->getValue();
+                    $amount            = $sumCradle / count($upToFourthDegree);
+                    $taxablePart       = $this->_retrieveTaxablePart($amount, $allowance);
+                    $tax               = $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['amount'];
+                    $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
+                }
+            }
+        }
+        return $result;
     }
 
+    public function retrieveGreatParents()
+    {
+        $result = [];
+        foreach ($this->physicalPersons as $physicalPerson) {
+            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::greatParent) {
+                $result[] = $physicalPerson;
+            }
+        }
+        return $result;
+    }
+    /**
+     * 
+     * @return array
+     */
+    public function retrieveDeathSiblings()
+    {
+        $result = [];
+        foreach ($this->physicalPersons as $physicalPerson) {
+            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::sibling && $physicalPerson->getAlive() === false) {
+                $result[] = $physicalPerson;
+            }
+        }
+        return $result;
+    }
     /**
      *
      * @return array
@@ -369,6 +546,22 @@ class InheritService
         }
         return $result;
     }
+
+    /**
+     *
+     * @return array
+     */
+    public function retrieveUpToFourthDegree()
+    {
+        $result = [];
+        foreach ($this->physicalPersons as $physicalPerson) {
+            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::upToFourthDegree) {
+                $result[] = $physicalPerson;
+            }
+        }
+        return $result;
+    }
+
     /**
      * Get Usufruct Value
      * 
