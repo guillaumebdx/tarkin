@@ -69,19 +69,35 @@ class InheritService
      */
     public function getHeirs()
     {
-        $result = [];
+        $results = [];
         if($this->hasChildren()) {
             if($this->isMarried()) {
-                $result = $this->_handleMarriedWithChildren();
+                $results = $this->_handleMarriedWithChildren();
             } else {
-                $result = $this->_handleSingleWithChildren();
+                $results = $this->_handleSingleWithChildren();
             }
         } elseif ($this->isMarried()) {
-            $result = $this->_handleMarriedWithoutChild();
+            $results = $this->_handleMarriedWithoutChild();
         } else {
-            $result = $this->_handleSingleWithoutChild();
+            $results = $this->_handleSingleWithoutChild();
         }
-        return $result;
+        $tax       = 0;
+        $amount    = 0;
+        $allowance = 0;
+        foreach ($results as $result) {
+            if (is_array($result) > 0) {
+                foreach ($result as $heir) {
+                    $amount    += $heir['amount'];
+                    $tax       += $heir['tax'];
+                    $allowance += $heir['allowance'];
+                }
+            }
+            
+        }
+        $results['totalTax']       = $tax;
+        $results['totalAmount']    = $amount;
+        $results['totalAllowance'] = $allowance;
+        return $results;
     }
 
     
