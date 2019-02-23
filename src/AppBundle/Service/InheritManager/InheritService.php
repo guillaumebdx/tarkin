@@ -165,7 +165,7 @@ class InheritService
         
 
         return [
-            'taxes'  => json_encode($taxes),
+            'taxes'  => $taxes,
             'amount' => floor(array_sum($taxes)),
         ];
     }
