@@ -94,9 +94,13 @@ class InheritService
             }
             
         }
-        $results['totalTax']       = $tax;
-        $results['totalAmount']    = $amount;
-        $results['totalAllowance'] = $allowance;
+        $cradle                      = $this->getCradle();
+        $properties                  = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $lifeInsuranceAmount         = $this->getPropertiesSum($properties, LiquidationFiscality::lifeInsurance);
+        $results['totalTax']         = $tax;
+        $results['totalAmount']      = $amount;
+        $results['totalAllowance']   = $allowance;
+        $results['totalLifeInsurance'] = $lifeInsuranceAmount;
         return $results;
     }
 
@@ -114,9 +118,7 @@ class InheritService
      */
     public function buildInheritArray(PhysicalPerson $heir, int $amount, int $allowance, int $taxablePart, int $tax, LiquidationFiscality $liquidationFiscality, string $propertyType)
     {
-        $cradle              = $this->getCradle();
-        $properties          = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
-        $lifeInsuranceAmount = $this->getPropertiesSum($properties, LiquidationFiscality::lifeInsurance);
+        
         return [
             'id'                       => $heir->getId(),
             'name'                     => $heir->getName(),
@@ -131,7 +133,6 @@ class InheritService
             'netSum'                   => $amount - $tax,
             'taxes'                    => $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['taxes'],
             'propertyType'             => $propertyType,
-            'lifeInsuranceAmount'      => $lifeInsuranceAmount,
         ];
     }
     /**
