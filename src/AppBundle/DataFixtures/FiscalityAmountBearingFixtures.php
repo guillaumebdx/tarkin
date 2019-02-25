@@ -20,15 +20,39 @@ class FiscalityAmountBearingFixtures extends Fixture implements DependentFixture
     public function load(ObjectManager $manager)
     {
 
-//         Life insurance
-//         $lifeInsuranceScales = [
-//             0      => 0,
-//             152500 => 20,
-//             700000 => 31.25,
-//         ];
-//         foreach ($constLawPostions as $constLawPosition) {
-                        
-//         }
+        $constLawPositions = [
+            LawPosition::beyondFourthDegree,
+            LawPosition::child,
+            LawPosition::cohabitPartner,
+            LawPosition::greatChild,
+            LawPosition::greatParent,
+            LawPosition::nephew,
+            LawPosition::parent,
+            LawPosition::sibling,
+            LawPosition::uncleAunt,
+            LawPosition::upToFourthDegree,
+            
+        ];
+
+        $lifeInsuranceScales = [
+            0      => 0,
+            152500 => 20,
+            700000 => 31.25,
+        ];
+        foreach ($constLawPositions as $constLawPosition) {
+            foreach ($lifeInsuranceScales as $amountScale => $rate) {
+                $fiscalityAmountBearing = new FiscalityAmountBearing();
+                $fiscalityAmountBearing->setAmount($amountScale);
+                $fiscalityAmountBearing->setRate($rate);
+                $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::lifeInsurance));
+                $fiscalityAmountBearing->setLiquidationFiscality($liquidationFiscality);
+                $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => $constLawPosition));
+                $fiscalityAmountBearing->setLawPositions($lawPosition);
+                $manager->persist($fiscalityAmountBearing);
+            }
+        }
+
+        
 
 //         common law siblings
         $siblingScales = [
@@ -121,6 +145,16 @@ class FiscalityAmountBearingFixtures extends Fixture implements DependentFixture
             $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => $lawIdentifier));
             $fiscalityAmountBearing->setLawPositions($lawPosition);
             $manager->persist($fiscalityAmountBearing);
+            
+            $fiscalityAmountBearing = new FiscalityAmountBearing();
+            $fiscalityAmountBearing->setAmount(0);
+            $fiscalityAmountBearing->setRate(0);
+            $liquidationFiscality = $manager->getRepository(LiquidationFiscality::class)->findOneBy(array('identifier' => LiquidationFiscality::lifeInsurance));
+            $fiscalityAmountBearing->setLiquidationFiscality($liquidationFiscality);
+            $lawPosition   = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => $lawIdentifier));
+            $fiscalityAmountBearing->setLawPositions($lawPosition);
+            $manager->persist($fiscalityAmountBearing);
+            
         }
         
         //up to fourth degree
