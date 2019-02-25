@@ -114,6 +114,9 @@ class InheritService
      */
     public function buildInheritArray(PhysicalPerson $heir, int $amount, int $allowance, int $taxablePart, int $tax, LiquidationFiscality $liquidationFiscality, string $propertyType)
     {
+        $cradle              = $this->getCradle();
+        $properties          = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $lifeInsuranceAmount = $this->getPropertiesSum($properties, LiquidationFiscality::lifeInsurance);
         return [
             'id'                       => $heir->getId(),
             'name'                     => $heir->getName(),
@@ -128,6 +131,7 @@ class InheritService
             'netSum'                   => $amount - $tax,
             'taxes'                    => $this->getInheritSum($taxablePart, $heir->getLawPosition(), $liquidationFiscality)['taxes'],
             'propertyType'             => $propertyType,
+            'lifeInsuranceAmount'      => $lifeInsuranceAmount,
         ];
     }
     /**
@@ -194,13 +198,13 @@ class InheritService
     {
         //TODO Ajouter la règle des parents
         // https://droit-finances.commentcamarche.com/contents/1000-succession-heritage-et-heritiers#le-defunt-etait-marie
-        $cradle     = $this->getCradle();
-        $properties = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
-        $amount     = $this->getPropertiesSum($properties);
-        $allowance  = 0;
-        $tax        = 0;
+        $cradle                  = $this->getCradle();
+        $properties              = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $amount                  = $this->getPropertiesSum($properties);
+        $allowance               = 0;
+        $tax                     = 0;
         $liquidationsFiscalities = $this->em->getRepository(LiquidationFiscality::class)->findBy(['identifier' => LiquidationFiscality::inherit]);
-        $liquidationFiscality = $liquidationsFiscalities[0];
+        $liquidationFiscality    = $liquidationsFiscalities[0];
         $taxablePart = $amount;
         foreach ($this->physicalPersons as $physicalPerson) {
             if($physicalPerson->isCradle() === false) {
@@ -619,16 +623,17 @@ class InheritService
      * @param array $properties
      * @return number
      */
-    public function getPropertiesSum(array $properties)
+    public function getPropertiesSum(array $properties, string $liquidationFiscality = LiquidationFiscality::inherit)
     {
         $sum = 0;
         foreach ($properties as $property) {
-            if ($property->getPropertyTypes()->getLiquidationFiscality()->getIdentifier() === LiquidationFiscality::inherit) {
+            if ($property->getPropertyTypes()->getLiquidationFiscality()->getIdentifier() === $liquidationFiscality) {
                 $sum += $property->getValue();
             }
         }
         return $sum;
     }
+
     /**
      * Has Children
      * 
