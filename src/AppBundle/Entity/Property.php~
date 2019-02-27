@@ -86,6 +86,12 @@ class Property
      */
     private $feeling;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Beneficiary", mappedBy="beneficiaries")
+     * 
+     */
+    private $beneficiaries;
+
     public function __construct() 
     {
         $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
@@ -300,5 +306,29 @@ class Property
             $result = false;
         }
         return $result;
+    }
+
+    /**
+     * Set feeling.
+     *
+     * @param int|null $feeling
+     *
+     * @return Property
+     */
+    public function setFeeling($feeling = null)
+    {
+        $this->feeling = $feeling;
+
+        return $this;
+    }
+
+    /**
+     * Get feeling.
+     *
+     * @return int|null
+     */
+    public function getFeeling()
+    {
+        return $this->feeling;
     }
 }

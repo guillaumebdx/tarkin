@@ -86,6 +86,12 @@ class Property
      */
     private $feeling;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Beneficiary", mappedBy="beneficiaries")
+     * 
+     */
+    private $beneficiaries;
+
     public function __construct() 
     {
         $this->physicalPersons = new \Doctrine\Common\Collections\ArrayCollection();
@@ -324,5 +330,41 @@ class Property
     public function getFeeling()
     {
         return $this->feeling;
+    }
+
+    /**
+     * Add beneficiary.
+     *
+     * @param \AppBundle\Entity\Beneficiary $beneficiary
+     *
+     * @return Property
+     */
+    public function addBeneficiary(\AppBundle\Entity\Beneficiary $beneficiary)
+    {
+        $this->beneficiaries[] = $beneficiary;
+
+        return $this;
+    }
+
+    /**
+     * Remove beneficiary.
+     *
+     * @param \AppBundle\Entity\Beneficiary $beneficiary
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeBeneficiary(\AppBundle\Entity\Beneficiary $beneficiary)
+    {
+        return $this->beneficiaries->removeElement($beneficiary);
+    }
+
+    /**
+     * Get beneficiaries.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBeneficiaries()
+    {
+        return $this->beneficiaries;
     }
 }
