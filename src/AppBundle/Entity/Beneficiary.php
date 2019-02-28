@@ -29,16 +29,17 @@ class Beneficiary
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Property", inversedBy="property")
-     * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
-     */
-    private $property;
-
-    /**
      * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="physicalPerson")
      * @ORM\JoinColumn(name="physical_person_id", referencedColumnName="id")
      */
     private $physicalPerson;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Property", inversedBy="beneficiaries")
+     * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     */
+    private $property;
+    
 
     /**
      * Get id.

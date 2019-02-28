@@ -87,8 +87,8 @@ class Property
     private $feeling;
 
     /**
-     * @ORM\OneToMany(targetEntity="Beneficiary", mappedBy="beneficiaries")
-     * 
+     * @ORM\OneToMany(targetEntity="Beneficiary", mappedBy="property")
+     * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
     private $beneficiaries;
 
