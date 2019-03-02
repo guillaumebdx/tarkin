@@ -23,6 +23,7 @@ class InheritService
     const USUFRUCT       = 'Usufruit';
     const NAKED_PROPERTY = 'Nue-propriété';
     const FULL_OWNERSHIP = 'Pleine propriété';
+    const LIFE_INSURANCE = 'Assurance vie';
 
     protected $em;
     private   $container;
@@ -92,14 +93,14 @@ class InheritService
                     $allowance += $heir['allowance'];
                 }
             }
-            
         }
-        $cradle                      = $this->getCradle();
-        $properties                  = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
-        $lifeInsuranceAmount         = $this->getPropertiesSum($properties, LiquidationFiscality::lifeInsurance);
-        $results['totalTax']         = $tax;
-        $results['totalAmount']      = $amount;
-        $results['totalAllowance']   = $allowance;
+        $cradle                        = $this->getCradle();
+        $properties                    = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $lifeInsuranceAmount           = $this->getPropertiesSum($properties, LiquidationFiscality::lifeInsurance);
+        $results['beneficiaries']      = $this->_handleLifeInsurance();  
+        $results['totalTax']           = $tax;
+        $results['totalAmount']        = $amount;
+        $results['totalAllowance']     = $allowance;
         $results['totalLifeInsurance'] = $lifeInsuranceAmount;
         return $results;
     }
@@ -215,6 +216,38 @@ class InheritService
         $result = [];
         $result['heirs'][] = $this->buildInheritArray($heir, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::FULL_OWNERSHIP);
         return $result;
+    }
+
+    private function _handleLifeInsurance()
+    {
+        $cradle              = $this->getCradle();
+        $properties          = $this->em->getRepository(Property::class)->findByPhysicalPerson($cradle);
+        $beneficiaries       = [];
+
+        foreach ($properties as $property) {
+            foreach ($property->getBeneficiaries() as $beneficiary) {
+                $physicalPersonId = $beneficiary->getPhysicalPerson()->getId();
+                if (!isset($beneficiaries[$physicalPersonId])) {
+                    $beneficiaries[$physicalPersonId] = 0;
+                }
+                $beneficiaries[$physicalPersonId] += $beneficiary->getAmount(); 
+             }
+
+        }
+        $result = [];
+        foreach ($beneficiaries as $physicalPersonId => $amount) {
+            $allowance            = 0;
+            $physicalPerson       = $this->em->getRepository(PhysicalPerson::class)->find($physicalPersonId);
+            $liquidationFiscality = $this->em->getRepository(LiquidationFiscality::class)->findOneByIdentifier(LiquidationFiscality::lifeInsurance);
+            $taxablePart          = $this->_retrieveTaxablePart($amount, $allowance);
+            $tax                  = $this->getInheritSum($taxablePart, $physicalPerson->getLawPosition(), $liquidationFiscality)['amount'];
+            $result[]    = $this->buildInheritArray($physicalPerson, $amount, $allowance, $taxablePart, $tax, $liquidationFiscality, self::LIFE_INSURANCE);
+        }
+        
+        return  $result;
+        
+
+        
     }
 
     /**
