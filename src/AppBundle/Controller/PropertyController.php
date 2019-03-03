@@ -16,7 +16,8 @@ use AppBundle\Entity\PropertyType;
 use AppBundle\Entity\AcquirementType;
 use AppBundle\Entity\LawPosition;
 use AppBundle\Entity\FamilyPosition;
-
+use AppBundle\Service\InheritManager\InheritService;
+use AppBundle\Entity\Beneficiary;
 
 class PropertyController extends Controller
 {
@@ -202,7 +203,7 @@ class PropertyController extends Controller
      * 
      * @Rest\Post("/api/new-property")
      */
-    public function createPropertyAction(Request $request, ParamFetcherInterface $paramFetcher)
+    public function createPropertyAction(Request $request, ParamFetcherInterface $paramFetcher, InheritService $inheritService)
     {
         $em                = $this->getDoctrine()->getManager();
         $personId          = $paramFetcher->get('personId');
@@ -217,23 +218,25 @@ class PropertyController extends Controller
         $person       = $em->getRepository(PhysicalPerson::class)->find($personId);
         $propertyType = $em->getRepository(PropertyType::class)->find($propertyTypeId);
 
-        
+        $spouse = null;
+        $personCollections = $em->getRepository(PhysicalPerson::class)->findBy(['user' => $person->getUser()->getId()]);
+        foreach($personCollections as $personIterate) {
+            if ($personIterate->getCradle() !== $person->getCradle() && $personIterate->getFamilyPosition()->getIdentifier() === FamilyPosition::conjoint) {
+                $spouse = $personIterate;
+            }
+        }
         if ($acquirementTypeId) {
             $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
-            if($person->getLawPosition()->getIdentifier() === LawPosition::commonCommunity && $acquirementType->getIdentifier() === AcquirementType::duringMarriage) {
+            if(
+                $person->getLawPosition()->getIdentifier() === LawPosition::commonCommunity 
+                && $acquirementType->getIdentifier() === AcquirementType::duringMarriage
+                && $propertyType->getIdentifier() !== PropertyType::lifeInsurance
+                ) {
                 $value = $value /2;
                 $property2 = new Property();
                 $property2->setName($name);
                 $property2->setValue($value);
                 $property2->setReturnRate($returnRate);
-                $personCollections = $em->getRepository(PhysicalPerson::class)->findBy(['user' => $person->getUser()->getId()]);
-
-                foreach($personCollections as $personIterate) {
-                    if ($personIterate->getCradle() !== $person->getCradle() && $personIterate->getFamilyPosition()->getIdentifier() === FamilyPosition::conjoint) {
-                        $spouse = $personIterate;
-                    }
-
-                }
                 $property2->addPhysicalPerson($spouse);
                 $property2->setPropertyTypes($propertyType);
                 $property2->setAcquirementTypes($acquirementType);
@@ -259,6 +262,27 @@ class PropertyController extends Controller
             $property->setShareWith($property2);
             $property2->setShareWith($property);
             $em->persist($property2);
+        }
+        $children = [];
+        $user            = $person->getUser();
+        $inheritService->setUser($user);
+        if ($propertyType->getIdentifier() === PropertyType::lifeInsurance) {
+            if ($inheritService->isMarried()) {
+                $beneficiary = new Beneficiary();
+                $beneficiary->setProperty($property);
+                $beneficiary->setAmount($value);
+                $beneficiary->setPhysicalPerson($spouse);
+                $em->persist($beneficiary);
+            } else {
+                $children = $inheritService->getChildren();
+            }
+        }
+        foreach ($children as $child) {
+            $beneficiary = new Beneficiary();
+            $beneficiary->setProperty($property);
+            $beneficiary->setAmount($value / count($children));
+            $beneficiary->setPhysicalPerson($child);
+            $em->persist($beneficiary);
         }
 
          $em->persist($property);

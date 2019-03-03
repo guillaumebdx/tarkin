@@ -37,7 +37,7 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $property->setName('AXA ODYSSIEL');
         $property->setReturnRate(3);
         $property->setAcquirementDate(new \DateTime('2018-12-02'));
-        $property->setValue(300000);
+        $property->setValue(600000);
         $acquirementType = $manager->getRepository(AcquirementType::class)->findOneBy(['identifier' => AcquirementType::beforeMarriage ]);
         $property->setAcquirementTypes($acquirementType);
         $propertyType = $manager->getRepository(PropertyType::class)->findOneBy(['identifier' => PropertyType::lifeInsurance]);
@@ -48,21 +48,21 @@ class PropertyFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($property);
         $beneficiary = new Beneficiary();
         $beneficiary->setProperty($property);
-        $beneficiary->setAmount(100000);
+        $beneficiary->setAmount(200000);
         $physicalPerson = $manager->getRepository(PhysicalPerson::class)->findOneByFirstName('Roméo');
         $beneficiary->setPhysicalPerson($physicalPerson);
         $manager->persist($beneficiary);
         
         $beneficiary = new Beneficiary();
         $beneficiary->setProperty($property);
-        $beneficiary->setAmount(100000);
+        $beneficiary->setAmount(200000);
         $physicalPerson = $manager->getRepository(PhysicalPerson::class)->findOneByFirstName('Tony');
         $beneficiary->setPhysicalPerson($physicalPerson);
         $manager->persist($beneficiary);
         
         $beneficiary = new Beneficiary();
         $beneficiary->setProperty($property);
-        $beneficiary->setAmount(100000);
+        $beneficiary->setAmount(200000);
         $physicalPerson = $manager->getRepository(PhysicalPerson::class)->findOneByFirstName('Louis');
         $beneficiary->setPhysicalPerson($physicalPerson);
         $manager->persist($beneficiary);

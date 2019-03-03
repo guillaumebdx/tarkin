@@ -643,7 +643,7 @@ class InheritService
      */
     public function getChildren()
     {
-        //TODO reperer plutot par getParents
+        //TODO reperer aussi avec getParents
         $children = [];
         foreach ($this->physicalPersons as $physicalPerson) {
             if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::child) {
