@@ -20,7 +20,6 @@ class PhysicalPerson
     * @ORM\ManyToMany(targetEntity="Property", mappedBy="physicalPersons")
     * 
     */
-    
     private $properties;
 
     /**
@@ -91,6 +90,12 @@ class PhysicalPerson
      * @ORM\Column(name="alive", type="boolean", nullable=true)
      */
     private $alive;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Priority", mappedBy="physicalPerson")
+     * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     */
+    private $priorities;
     
 
     public function __construct()
@@ -385,5 +390,41 @@ class PhysicalPerson
     public function getAlive()
     {
         return $this->alive;
+    }
+
+    /**
+     * Add priority.
+     *
+     * @param \AppBundle\Entity\Priority $priority
+     *
+     * @return PhysicalPerson
+     */
+    public function addPriority(\AppBundle\Entity\Priority $priority)
+    {
+        $this->priorities[] = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Remove priority.
+     *
+     * @param \AppBundle\Entity\Priority $priority
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePriority(\AppBundle\Entity\Priority $priority)
+    {
+        return $this->priorities->removeElement($priority);
+    }
+
+    /**
+     * Get priorities.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPriorities()
+    {
+        return $this->priorities;
     }
 }

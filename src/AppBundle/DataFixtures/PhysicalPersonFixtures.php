@@ -7,13 +7,26 @@ use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\PhysicalPerson;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use AppBundle\Entity\FamilyPosition;
-use AppBundle\Entity\Property;
 use AppBundle\Entity\LawPosition;
+use AppBundle\Entity\PriorityType;
+use AppBundle\Entity\Priority;
 
 class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterface
 
 {
 
+    
+    private function getPriorityTypes()
+    {
+        return [
+            PriorityType::INCOME_FISCALITY,
+            PriorityType::INHERIT,
+            PriorityType::LONG_TERM,
+            PriorityType::RETIREMENT,
+            PriorityType::SHORT_TERM,
+            PriorityType::WEALTH_FISCALITY,
+        ];
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -29,6 +42,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Roméo');
@@ -84,6 +105,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::individedPacs));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Philippe');
@@ -110,6 +139,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::separatedProperty));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Jean');
@@ -136,6 +173,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Julien');
@@ -163,6 +208,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::commonCommunity));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Henri');
@@ -189,6 +242,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::universalCommunity));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Laure');
@@ -215,6 +276,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::commonCommunity));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         
         $physicalPerson = new PhysicalPerson();
         $physicalPerson->setFirstName('Severine');
@@ -241,6 +310,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         $parent3 = $physicalPerson;
         
         $physicalPerson = new PhysicalPerson();
@@ -284,6 +361,14 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         $lawPosition = $manager->getRepository(LawPosition::class)->findOneBy(array('identifier' => LawPosition::cohabitPartner));
         $physicalPerson->setLawPosition($lawPosition);
         $manager->persist($physicalPerson);
+        foreach ($this->getPriorityTypes() as $priorityTypeIdentifier) {
+            $priorityType = $manager->getRepository(PriorityType::class)->findOneBy(array('identifier' => $priorityTypeIdentifier));
+            $priority     = new Priority();
+            $priority->setValue(rand(1, 100));
+            $priority->setPriorityType($priorityType);
+            $priority->setPhysicalPerson($physicalPerson);
+            $manager->persist($priority);
+        }
         $parent1 = $physicalPerson;
         
         $physicalPerson = new PhysicalPerson();
@@ -353,6 +438,7 @@ class PhysicalPersonFixtures extends Fixture implements DependentFixtureInterfac
         return array(
             UserFixtures::class,
             FamilyPositionFixtures::class,
+            PriorityTypeFixtures::class,
        
         );
     }

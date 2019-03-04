@@ -20,7 +20,6 @@ class PhysicalPerson
     * @ORM\ManyToMany(targetEntity="Property", mappedBy="physicalPersons")
     * 
     */
-    
     private $properties;
 
     /**
@@ -91,6 +90,12 @@ class PhysicalPerson
      * @ORM\Column(name="alive", type="boolean", nullable=true)
      */
     private $alive;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Priority", mappedBy="physicalPerson")
+     * @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
+     */
+    private $priorities;
     
 
     public function __construct()

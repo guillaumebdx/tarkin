@@ -1,0 +1,79 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Priority
+ *
+ * @ORM\Table(name="priority")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PriorityRepository")
+ */
+class Priority
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="value", type="integer")
+     */
+    private $value;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="PhysicalPerson", inversedBy="priorities")
+     * @ORM\JoinTable(name="physical_person_priority")
+     */
+    private $physicalPerson;
+
+    /**
+     * @ORM\OneToOne(targetEntity="PriorityType")
+     * @ORM\JoinColumn(name="priority_type_id", referencedColumnName="id")
+     * 
+     */
+    private $priorityType;
+    
+
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set value.
+     *
+     * @param int $value
+     *
+     * @return Priority
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value.
+     *
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+}
