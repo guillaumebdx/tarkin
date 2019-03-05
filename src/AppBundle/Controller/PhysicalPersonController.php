@@ -33,6 +33,7 @@ class PhysicalPersonController extends Controller
             $physicalPersonsCollection = $em->getRepository(PhysicalPerson::class)->findBy(['user' => $user]);
             $physicalPersons           = [];
             foreach ($physicalPersonsCollection as $physicalPerson) {
+                
                 $physicalPersons[] = [
                     'id'              => $physicalPerson->getId(),
                     'first_name'      => $physicalPerson->getFirstName(),
@@ -42,6 +43,7 @@ class PhysicalPersonController extends Controller
                     'cradle'          => $physicalPerson->isCradle(),
                     'birth_date'      => $physicalPerson->getBirthDate()->format('Y/m/d'),
                     'parents'         => $physicalPerson->getParentIds(),
+                    'priorities'      => $this->_buildPriorities($physicalPerson),
                 ];
             }
             $response = new JsonResponse($physicalPersons);
@@ -120,6 +122,23 @@ class PhysicalPersonController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
                 );
         }
+    }
+
+    private function _buildPriorities(PhysicalPerson $physicalPerson)
+    {
+        $priorities = [];
+        foreach ($physicalPerson->getPriorities() as $priority) {
+            $priorities[] = 
+            [
+                'id'                     => $priority->getId(),
+                'value'                  => $priority->getValue(),
+                'priorityTypeId'         => $priority->getPriorityType()->getId(),
+                'priorityTypeIdentifier' => $priority->getPriorityType()->getIdentifier(),
+                'priorityTypeName'       => $priority->getPriorityType()->getName(),
+            ];
+        }
+        return $priorities;
+        
     }
     
     
