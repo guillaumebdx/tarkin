@@ -24,15 +24,25 @@ class FamilyPositionController extends Controller
     public function getFamilyPositionsAction(Request $request)
     {
         try {
+            $getSpouse = $request->query->get('spouse');
             $em                        = $this->getDoctrine()->getManager();
             $familyPositionsCollection = $em->getRepository(FamilyPosition::class)->findAll();
             $familyPositions           = [];
             foreach ($familyPositionsCollection as $familyPosition) {
-                $familyPositions[] = [
-                    'id'                      => $familyPosition->getId(),
-                    'name'                    => $familyPosition->getName(),
-                    'identifier'              => $familyPosition->getIdentifier(),
-                ];
+                if ($getSpouse === "false" && $familyPosition->getIdentifier() !== FamilyPosition::conjoint) {
+                    $familyPositions[] = [
+                        'id'                      => $familyPosition->getId(),
+                        'name'                    => $familyPosition->getName(),
+                        'identifier'              => $familyPosition->getIdentifier(),
+                    ];
+                } elseif ($getSpouse !== "false") {
+                    $familyPositions[] = [
+                        'id'                      => $familyPosition->getId(),
+                        'name'                    => $familyPosition->getName(),
+                        'identifier'              => $familyPosition->getIdentifier(),
+                    ];
+                }
+                
             }
                        
             $response = new JsonResponse($familyPositions);
