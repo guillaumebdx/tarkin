@@ -71,7 +71,7 @@ class InheritService
     public function getHeirs()
     {
         $results = [];
-        if($this->hasChildren() || !$this->isUniversalCommunity()) {
+        if($this->hasChildren() && !$this->isUniversalCommunity()) {
             if($this->isMarried()) {
                 $results = $this->_handleMarriedWithChildren();
             } else {
