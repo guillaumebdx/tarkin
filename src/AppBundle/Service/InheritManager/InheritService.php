@@ -102,6 +102,7 @@ class InheritService
         $results['totalAmount']        = $amount;
         $results['totalAllowance']     = $allowance;
         $results['totalLifeInsurance'] = $lifeInsuranceAmount;
+        $results['lawIdentifier']      = $this->getCradle()->getLawPosition()->getIdentifier();
         return $results;
     }
 
