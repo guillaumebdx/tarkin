@@ -71,7 +71,7 @@ class InheritService
     public function getHeirs()
     {
         $results = [];
-        if($this->hasChildren()) {
+        if($this->hasChildren() || !$this->isUniversalCommunity()) {
             if($this->isMarried()) {
                 $results = $this->_handleMarriedWithChildren();
             } else {
@@ -191,6 +191,10 @@ class InheritService
         return $result;
     }
 
+    public function isUniversalCommunity()
+    {
+        return $this->getCradle()->getLawPosition()->getIdentifier() === LawPosition::universalCommunity;
+    }
     /**
      * 
      * @return array
@@ -705,7 +709,7 @@ class InheritService
     /**
      * Get Cradle
      *
-     * @return string|PhysicalPerson
+     * @return PhysicalPerson
      */
     public function getCradle()
     {

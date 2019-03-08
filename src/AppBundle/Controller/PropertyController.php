@@ -229,8 +229,9 @@ class PropertyController extends Controller
             $acquirementType = $em->getRepository(AcquirementType::class)->find($acquirementTypeId);
             if(
                 $person->getLawPosition()->getIdentifier() === LawPosition::commonCommunity 
-                && $acquirementType->getIdentifier() === AcquirementType::duringMarriage
-                && $propertyType->getIdentifier() !== PropertyType::lifeInsurance
+                && $acquirementType->getIdentifier()       === AcquirementType::duringMarriage
+                && $propertyType->getIdentifier()          !== PropertyType::lifeInsurance
+                || $person->getLawPosition()->getIdentifier() === LawPosition::universalCommunity
                 ) {
                 $value = $value /2;
                 $property2 = new Property();
@@ -242,16 +243,14 @@ class PropertyController extends Controller
                 $property2->setAcquirementTypes($acquirementType);
                 $property2->setAcquirementDate(new \DateTime($acquirementDate));
                 $property2->setFeeling($feelingValue);
-            }
+                } 
         }
         
         $property = new Property();
         $property->setName($name);
         $property->setValue($value);
-        $property->setReturnRate($returnRate);
-        
-        $property->addPhysicalPerson($person);
-        
+        $property->setReturnRate($returnRate);        
+        $property->addPhysicalPerson($person);        
         $property->setPropertyTypes($propertyType);
         if ($acquirementTypeId) {
             $property->setAcquirementTypes($acquirementType);
@@ -264,7 +263,7 @@ class PropertyController extends Controller
             $em->persist($property2);
         }
         $children = [];
-        $user            = $person->getUser();
+        $user     = $person->getUser();
         $inheritService->setUser($user);
         if ($propertyType->getIdentifier() === PropertyType::lifeInsurance) {
             if ($inheritService->isMarried()) {
