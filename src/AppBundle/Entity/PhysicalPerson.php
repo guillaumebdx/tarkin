@@ -427,4 +427,20 @@ class PhysicalPerson
     {
         return $this->priorities;
     }
+
+    /**
+     * Is cradle child
+     * @return boolean
+     */
+    public function isCradleChild()
+    {
+        $result = false;
+        foreach ($this->getParents() as $parent) {
+            if ($this->getLawPosition()->getIdentifier() === LawPosition::child && $parent->isCradle()) {
+                $result = true;
+                break;
+            }
+        }
+        return $result;
+    }
 }

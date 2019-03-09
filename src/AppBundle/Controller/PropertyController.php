@@ -289,11 +289,14 @@ class PropertyController extends Controller
             }
         }
         foreach ($children as $child) {
-            $beneficiary = new Beneficiary();
-            $beneficiary->setProperty($property);
-            $beneficiary->setAmount($value / count($children));
-            $beneficiary->setPhysicalPerson($child);
-            $em->persist($beneficiary);
+            if ($child->isCradleChild()) {
+                $beneficiary = new Beneficiary();
+                $beneficiary->setProperty($property);
+                $beneficiary->setAmount($value / $inheritService->countCradleChildren());
+                $beneficiary->setPhysicalPerson($child);
+                $em->persist($beneficiary);
+            }
+            
         }
 
          $em->persist($property);

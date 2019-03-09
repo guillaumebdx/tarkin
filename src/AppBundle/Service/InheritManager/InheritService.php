@@ -648,10 +648,9 @@ class InheritService
      */
     public function getChildren()
     {
-        //TODO reperer aussi avec getParents
         $children = [];
         foreach ($this->physicalPersons as $physicalPerson) {
-            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::child) {
+            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::child && $physicalPerson->isCradleChild()) {
                 $children[] = $physicalPerson;
             }
         }
@@ -729,6 +728,17 @@ class InheritService
     private function _setPhysicalPersons()
     {
         $this->physicalPersons = $this->em->getRepository(PhysicalPerson::class)->findBy(['user' => $this->user]);
+    }
+    
+    public function countCradleChildren() 
+    {
+        $i = 0;
+        foreach ($this->physicalPersons as $physicalPerson) {
+            if ($physicalPerson->getLawPosition()->getIdentifier() === LawPosition::child && $physicalPerson->isCradleChild()) {
+                $i++;
+            }
+        }
+        return $i;
     }
 
 
